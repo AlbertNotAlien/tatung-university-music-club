@@ -1,3 +1,40 @@
 {
-  "extends": "next/core-web-vitals"
+  "extends": [
+    "next/core-web-vitals",
+    "airbnb",
+    "airbnb-typescript",
+    "prettier"
+  ],
+  "rules": {
+    "react-hooks/rules-of-hooks": "error",
+    "react-hooks/exhaustive-deps": "warn",
+    "react/require-default-props": "off",
+    "react/jsx-props-no-spreading": "off",
+    "import/prefer-default-export": "off",
+    "import/extensions": [
+      "error",
+      "ignorePackages",
+      {
+        "js": "never",
+        "jsx": "never",
+        "ts": "never",
+        "tsx": "never",
+        "": "never"
+      }
+    ]
+  },
+  "overrides": [
+    {
+      "files": ["**/components/ui/*.tsx"],
+      "rules": {
+        "react/prop-types": [2, { "ignore": ["className"] }],
+        "react-refresh/only-export-components": "off",
+        "react/function-component-definition": "warn"
+      }
+    }
+  ],
+  "parserOptions": {
+    "project": "./tsconfig.json"
+  },
+  "ignorePatterns": ["**/*.mjs", "**/*.ts"]
 }
