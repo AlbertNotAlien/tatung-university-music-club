@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { ChevronsUp, Plus } from 'lucide-react';
+import { Event } from '@/api/firebase/firestore';
 import {
   Table,
   TableHeader,
@@ -68,7 +69,21 @@ function generateWeekDatesFromDate(date: Date): Date[] {
   });
 }
 
-export function BookingCalendar() {
+function findEventByHour(events: Event[], date: Date, hour: string) {
+  return events.find(
+    (event) =>
+      event.date.year === date.getFullYear() &&
+      event.date.month === date.getMonth() &&
+      event.date.date === date.getDate() &&
+      event.times.includes(hour),
+  );
+}
+
+type BookingCalendarProps = {
+  events: Event[] | undefined;
+};
+
+export function BookingCalendar({ events = [] }: BookingCalendarProps) {
   const selectedDate = new Date();
   const selectedWeek = generateWeekDatesFromDate(selectedDate);
 
@@ -107,16 +122,30 @@ export function BookingCalendar() {
               <TableCell className="text-2xs p-0 text-muted-foreground md:text-xs">
                 {hour.label}
               </TableCell>
-              {selectedWeek.map((date) => (
-                <TableCell
-                  key={date.toString()}
-                  className="px-0.5 py-2 md:px-2 md:py-4"
-                >
-                  <Button variant="outline" className="h-10 w-full">
-                    <Plus className="w-4 min-w-2" />
-                  </Button>
-                </TableCell>
-              ))}
+              {selectedWeek.map((date) => {
+                const bookedData = findEventByHour(events, date, hour.value);
+                return (
+                  <TableCell
+                    key={date.toString()}
+                    className="px-0.5 py-2 md:px-2 md:py-4"
+                  >
+                    {bookedData ? (
+                      <Button
+                        variant="outline"
+                        className="h-10 max-h-10 w-full whitespace-normal px-1 py-0"
+                      >
+                        <p className="text-2xs line-clamp-2 md:line-clamp-1 md:text-xs">
+                          {bookedData.bandName}
+                        </p>
+                      </Button>
+                    ) : (
+                      <Button variant="outline" className="h-10 w-full">
+                        <Plus className="w-4 min-w-2" />
+                      </Button>
+                    )}
+                  </TableCell>
+                );
+              })}
             </TableRow>
           ))}
         </TableBody>
