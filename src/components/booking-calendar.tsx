@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { ChevronsUp, Plus } from 'lucide-react';
-import { Event } from '@/api/firebase/firestore';
+import { Event } from '@/lib/firebase/firestore';
 import {
   Table,
   TableHeader,
