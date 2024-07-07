@@ -1,5 +1,5 @@
 import { collection, getDocs, addDoc } from 'firebase/firestore';
-import { db } from '@/api/firebase/firebase-app';
+import { db } from '@/lib/firebase/firebase-app';
 
 export type Event = {
   bandName: string;
