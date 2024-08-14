@@ -1,6 +1,10 @@
+'use client';
+
 import React from 'react';
-import Link from 'next/link';
 import Image from 'next/image';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { Icon } from '@/components/icon';
 import {
@@ -13,12 +17,20 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 
+const navLinks = [
+  { name: 'Rules', path: '/rules' },
+  { name: 'Booking', path: '/booking' },
+];
+
 export default function Header() {
+  const pathname = usePathname();
+  const checkActivePath = (path: string) => path === pathname;
+
   return (
     <header className="container sticky top-0 z-10 flex h-16 items-center gap-4 border-b bg-background">
       <nav className="hidden flex-col gap-6 text-lg font-medium md:flex md:flex-row md:items-center md:gap-5 md:text-sm lg:gap-6">
         <Link
-          href="#/"
+          href="/"
           className="flex h-8 w-8 items-center gap-2 text-lg font-semibold md:text-base"
         >
           <Image
@@ -30,24 +42,19 @@ export default function Header() {
           />
           <span className="sr-only">TTUMC</span>
         </Link>
-        <Link
-          href="#/"
-          className="text-muted-foreground transition-colors hover:text-foreground"
-        >
-          About
-        </Link>
-        <Link
-          href="#/"
-          className="text-muted-foreground transition-colors hover:text-foreground"
-        >
-          Rules
-        </Link>
-        <Link
-          href="/booking"
-          className="text-foreground transition-colors hover:text-foreground"
-        >
-          Booking
-        </Link>
+        {navLinks.map((link) => (
+          <Link
+            href={link.path}
+            className={cn(
+              'transition-colors hover:text-foreground',
+              checkActivePath(link.path)
+                ? 'text-foreground'
+                : 'text-muted-foreground',
+            )}
+          >
+            {link.name}
+          </Link>
+        ))}
       </nav>
       <Sheet>
         <SheetTrigger asChild>
