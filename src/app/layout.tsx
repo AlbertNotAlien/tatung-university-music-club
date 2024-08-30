@@ -4,6 +4,7 @@ import { Inter as FontSans } from 'next/font/google';
 import { cn } from '@/lib/utils';
 import Header from '@/components/header';
 import Footer from '@/components/footer';
+import { ThemeProvider } from '@/components/theme-provider';
 import './globals.css';
 
 const fontSans = FontSans({
@@ -29,11 +30,18 @@ export default function RootLayout({
           fontSans.variable,
         )}
       >
-        <Header />
-        <div className="flex min-h-[calc(100dvh-4rem)] flex-col">
-          <main className="container flex-1">{children}</main>
-          <Footer />
-        </div>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <Header />
+          <div className="flex min-h-[calc(100dvh-4rem)] flex-col">
+            <main className="container flex-1">{children}</main>
+            <Footer />
+          </div>
+        </ThemeProvider>
       </body>
     </html>
   );
