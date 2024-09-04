@@ -38,3 +38,6 @@ next-env.d.ts
 certificates
 
 service-account.json
+
+#bundle
+bun.lockb
