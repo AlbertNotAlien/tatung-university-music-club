@@ -118,7 +118,10 @@ export default function TeacherCard({
   links,
 }: TeacherListProps) {
   return (
-    <motion.div className="h-fit w-fit p-2" whileHover="hover">
+    <motion.div
+      className={cn('h-auto w-full p-0', 'md:min-w-[360px] md:p-4')}
+      whileHover="hover"
+    >
       <ExpandableCard
         transition={{
           type: 'spring',
@@ -130,7 +133,7 @@ export default function TeacherCard({
           style={triggerCard.style}
           variants={triggerCard.motion}
           className={cn(
-            'flex max-w-[300px] flex-col overflow-hidden',
+            'flex flex-col overflow-hidden',
             'border border-zinc-950/10 bg-white dark:border-zinc-50/10 dark:bg-zinc-900',
           )}
         >
