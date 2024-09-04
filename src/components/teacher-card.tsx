@@ -1,7 +1,6 @@
 'use client';
 
 import React from 'react';
-import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { cn } from '@/lib/utils';
 import {
@@ -19,46 +18,6 @@ import { Separator } from '@radix-ui/react-dropdown-menu';
 import { FaFacebook, FaInstagram, FaYoutube, FaLink } from 'react-icons/fa';
 import Markdown from 'react-markdown';
 
-const triggerCard = {
-  style: {
-    borderRadius: '12px',
-    boxShadow: '2px 4px 12px #00000014',
-    filter: 'grayscale(100%)',
-  },
-  motion: {
-    hover: {
-      scale: 1.01,
-      boxShadow: '2px 4px 16px #00000026',
-      filter: 'grayscale(0)',
-      transition: {
-        duration: 0.2,
-      },
-    },
-  },
-};
-
-const socialMediaIcon = {
-  style: {
-    boxShadow: 'none',
-    color: '#71717a',
-  },
-  motion: {
-    hover: {
-      color: '#18181b',
-      boxShadow: '1px 2px 8px #00000010',
-      transition: {
-        duration: 0.2,
-      },
-    },
-  },
-};
-
-const descriptionMotion = {
-  initial: { opacity: 0, scale: 0.8, y: 100 },
-  animate: { opacity: 1, scale: 1, y: 0 },
-  exit: { opacity: 0, scale: 0.8, y: 100 },
-};
-
 type SocialMediaLinksProps = {
   facebook: string;
   instagram: string;
@@ -68,34 +27,74 @@ type SocialMediaLinksProps = {
 
 function SocialMediaLinks({ links }: { links: SocialMediaLinksProps }) {
   const { facebook, instagram, youtube, official } = links;
+
+  const socialMediaIcon = {
+    style: {
+      boxShadow: 'none',
+      color: '#71717a',
+    },
+    motion: {
+      hover: {
+        color: '#18181b',
+        boxShadow: '1px 2px 8px #00000010',
+        transition: {
+          duration: 0.2,
+        },
+      },
+    },
+  };
+
   return (
-    <div className="relative bottom-0 flex h-fit flex-row gap-3">
+    <motion.div className="relative bottom-0 flex h-fit flex-row gap-3">
       {facebook.length > 0 && (
-        <Link className="text-2xl text-zinc-500" href={facebook}>
+        <a className="text-2xl text-zinc-500" href={facebook} target="_blank">
           <motion.div
+            layout
             style={socialMediaIcon.style}
             variants={socialMediaIcon.motion}
+            whileHover="hover"
           >
             <FaFacebook />
           </motion.div>
-        </Link>
+        </a>
       )}
       {instagram.length > 0 && (
-        <Link className="text-2xl text-zinc-500" href={instagram}>
-          <FaInstagram />
-        </Link>
+        <a className="text-2xl text-zinc-500" href={instagram} target="_blank">
+          <motion.div
+            layout
+            style={socialMediaIcon.style}
+            variants={socialMediaIcon.motion}
+            whileHover="hover"
+          >
+            <FaInstagram />
+          </motion.div>
+        </a>
       )}
       {youtube.length > 0 && (
-        <Link className="text-2xl text-zinc-500" href={youtube}>
-          <FaYoutube />
-        </Link>
+        <a className="text-2xl text-zinc-500" href={youtube} target="_blank">
+          <motion.div
+            layout
+            style={socialMediaIcon.style}
+            variants={socialMediaIcon.motion}
+            whileHover="hover"
+          >
+            <FaYoutube />
+          </motion.div>
+        </a>
       )}
       {official.length > 0 && (
-        <Link className="text-2xl text-zinc-500" href={official}>
-          <FaLink />
-        </Link>
+        <a className="text-2xl text-zinc-500" href={official} target="_blank">
+          <motion.div
+            layout
+            style={socialMediaIcon.style}
+            variants={socialMediaIcon.motion}
+            whileHover="hover"
+          >
+            <FaLink />
+          </motion.div>
+        </a>
       )}
-    </div>
+    </motion.div>
   );
 }
 
@@ -117,6 +116,30 @@ export default function TeacherCard({
   videoLink,
   links,
 }: TeacherListProps) {
+  const triggerCard = {
+    style: {
+      borderRadius: '12px',
+      boxShadow: '2px 4px 12px #00000014',
+      filter: 'grayscale(100%)',
+    },
+    motion: {
+      hover: {
+        scale: 1.01,
+        boxShadow: '2px 4px 16px #00000026',
+        filter: 'grayscale(0)',
+        transition: {
+          duration: 0.2,
+        },
+      },
+    },
+  };
+
+  const descriptionMotion = {
+    initial: { opacity: 0, scale: 0.8, y: 100 },
+    animate: { opacity: 1, scale: 1, y: 0 },
+    exit: { opacity: 0, scale: 0.8, y: 100 },
+  };
+
   return (
     <motion.div
       className={cn('h-auto w-full p-0', 'md:min-w-[360px] md:p-4')}
