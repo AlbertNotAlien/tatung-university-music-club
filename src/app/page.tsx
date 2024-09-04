@@ -1,6 +1,6 @@
-import React, { useId } from 'react';
-import TeacherCardsCarousel from '@/components/teacher-cards-carousel';
+import React from 'react';
+import TeacherIntroductionSection from '@/components/teacher-introduction-section';
 
 export default function Home() {
-  return <TeacherCardsCarousel />;
+  return <TeacherIntroductionSection />;
 }
