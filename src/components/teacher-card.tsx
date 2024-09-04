@@ -59,28 +59,63 @@ const descriptionMotion = {
   exit: { opacity: 0, scale: 0.8, y: 100 },
 };
 
+type SocialMediaLinksProps = {
+  facebook: string;
+  instagram: string;
+  youtube: string;
+  official: string;
+};
+
+function SocialMediaLinks({ links }: { links: SocialMediaLinksProps }) {
+  const { facebook, instagram, youtube, official } = links;
+  return (
+    <div className="relative bottom-0 flex h-fit flex-row gap-3">
+      {facebook.length > 0 && (
+        <Link className="text-2xl text-zinc-500" href={facebook}>
+          <motion.div
+            style={socialMediaIcon.style}
+            variants={socialMediaIcon.motion}
+          >
+            <FaFacebook />
+          </motion.div>
+        </Link>
+      )}
+      {instagram.length > 0 && (
+        <Link className="text-2xl text-zinc-500" href={instagram}>
+          <FaInstagram />
+        </Link>
+      )}
+      {youtube.length > 0 && (
+        <Link className="text-2xl text-zinc-500" href={youtube}>
+          <FaYoutube />
+        </Link>
+      )}
+      {official.length > 0 && (
+        <Link className="text-2xl text-zinc-500" href={official}>
+          <FaLink />
+        </Link>
+      )}
+    </div>
+  );
+}
+
 type TeacherListProps = {
   name: string;
   subtitle: string;
   imgSrc: string;
   bandRole: string;
-  links: {
-    facebook: string;
-    instagram: string;
-    youtube: string;
-    official: string;
-  };
   description: string;
   videoLink: string;
+  links: SocialMediaLinksProps;
 };
 
 export default function TeacherCard({
   name,
   subtitle,
   imgSrc,
-  links,
   description,
   videoLink,
+  links,
 }: TeacherListProps) {
   return (
     <motion.div className="h-fit w-fit p-2" whileHover="hover">
@@ -142,45 +177,7 @@ export default function TeacherCard({
                     {subtitle}
                   </ExpandableCardSubtitle>
                 </div>
-                <div className="relative bottom-0 flex h-fit flex-row gap-3">
-                  {links.facebook.length > 0 && (
-                    <Link
-                      className="text-2xl text-zinc-500"
-                      href={links.facebook}
-                    >
-                      <motion.div
-                        style={socialMediaIcon.style}
-                        variants={socialMediaIcon.motion}
-                      >
-                        <FaFacebook />
-                      </motion.div>
-                    </Link>
-                  )}
-                  {links.instagram.length > 0 && (
-                    <Link
-                      className="text-2xl text-zinc-500"
-                      href={links.instagram}
-                    >
-                      <FaInstagram />
-                    </Link>
-                  )}
-                  {links.youtube.length > 0 && (
-                    <Link
-                      className="text-2xl text-zinc-500"
-                      href={links.youtube}
-                    >
-                      <FaYoutube />
-                    </Link>
-                  )}
-                  {links.official.length > 0 && (
-                    <Link
-                      className="text-2xl text-zinc-500"
-                      href={links.official}
-                    >
-                      <FaLink />
-                    </Link>
-                  )}
-                </div>
+                <SocialMediaLinks links={links} />
               </div>
               <Separator />
               <ExpandableCardDescription
