@@ -1,4 +1,4 @@
-import React, { useId } from 'react';
+import React from 'react';
 import {
   Carousel,
   CarouselContent,
@@ -10,15 +10,14 @@ import TeacherCard from '@/components/teacher-card';
 import { teacherList } from '@/data/teacher-list';
 import { cn } from '@/lib/utils';
 
-export default function TeacherCardsCarousel() {
-  const id = useId();
+export default function TeacherIntroductionSection() {
   return (
     <Carousel>
       <CarouselContent className="ml-1 flex flex-row">
         {teacherList.map((teacher) => {
           return (
             <CarouselItem
-              key={`${teacher.name}_${id}`}
+              key={`${teacher.id}`}
               className={cn('basis-5/6 px-2 py-6', 'md:basis-[360px] md:px-0')}
             >
               <TeacherCard {...teacher} />
