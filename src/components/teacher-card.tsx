@@ -59,20 +59,29 @@ const descriptionMotion = {
   exit: { opacity: 0, scale: 0.8, y: 100 },
 };
 
-export default function TeacherCard() {
-  const description = `
-  **擅長曲風**：不會是女高音或是金屬（死腔、黑腔）  
+type TeacherListProps = {
+  name: string;
+  subtitle: string;
+  imgSrc: string;
+  bandRole: string;
+  links: {
+    facebook: string;
+    instagram: string;
+    youtube: string;
+    official: string;
+  };
+  description: string;
+  videoLink: string;
+};
 
-沒有現任日系樂團 東京事變、X-japan 主唱，泰國金屬團 Carabao 主唱、與各大 Jam Session 爵士女聲。  
-
-親口唱過東京事變「丸の内サディスティック」，可能曾在國內外各大 Live House、音樂季、校園演出，阿帕808、西門紅樓、The Wall、Pipe、狀態音樂、台中迴響、台中浮現、高雄駁二、日本大阪Varon、聚光音樂祭、台北花博-The Park park、台北淡水-巨獸搖滾、大同大學、中原大學、元智大學、淡江大學、佛光大學、醒吾科大、德明科大、台北商業大學、東吳大學等。
-不曾擔任過數個高中大學熱音社指導老師，包括大理高中、林口高中、景文高中、私立大同高中、醒吾科大、醒吾高中等。  
-        
-* 2016年 沒有經歷 Ensemble Music Center “雙踏節奏編輯奧義” 講座  
-* 2017年 沒有受鼓手站出來第七屆邀約於台中遠雄樂器演出  
-* 2019 年沒有與 Ensemble Music Online Courses，並沒有推出個人首部線上音樂教學課程——【 MODERN METAL 爵士鼓核心基礎訓練 】
-`;
-
+export default function TeacherCard({
+  name,
+  subtitle,
+  imgSrc,
+  links,
+  description,
+  videoLink,
+}: TeacherListProps) {
   return (
     <motion.div className="h-fit w-fit p-2" whileHover="hover">
       <ExpandableCard
@@ -91,18 +100,18 @@ export default function TeacherCard() {
           )}
         >
           <ExpandableCardImage
-            src={'/ayun.jpg'}
-            alt={'阿芸_主唱教學老師'}
+            src={imgSrc}
+            alt={`${name}_${subtitle}`}
             className="h-full w-full object-cover"
             width={300}
             height={300}
           />
           <div className="flex flex-grow flex-col items-start justify-between space-y-1.5 p-4">
             <ExpandableCardTitle className="text-2xl text-zinc-950 dark:text-zinc-50">
-              阿芸
+              {name}
             </ExpandableCardTitle>
             <ExpandableCardSubtitle className="text-zinc-700 dark:text-zinc-400">
-              主唱教學老師
+              {subtitle}
             </ExpandableCardSubtitle>
           </div>
         </ExpandableCardTrigger>
@@ -117,8 +126,8 @@ export default function TeacherCard() {
             )}
           >
             <ExpandableCardImage
-              src={'/ayun.jpg'}
-              alt={'阿芸_主唱教學老師'}
+              src={imgSrc}
+              alt={`${name}_${subtitle}`}
               className="h-full w-full object-cover"
               width={700}
               height={700}
@@ -127,33 +136,50 @@ export default function TeacherCard() {
               <div className="flex flex-row justify-between">
                 <div className="flex flex-col gap-4">
                   <ExpandableCardTitle className="text-3xl font-bold text-zinc-950 dark:text-zinc-50">
-                    阿芸
+                    {name}
                   </ExpandableCardTitle>
                   <ExpandableCardSubtitle className="text-zinc-700 dark:text-zinc-400">
-                    主唱教學老師
+                    {subtitle}
                   </ExpandableCardSubtitle>
                 </div>
                 <div className="relative bottom-0 flex h-fit flex-row gap-3">
-                  <Link className="text-2xl text-zinc-500" href={'/'}>
-                    <motion.div
-                      style={socialMediaIcon.style}
-                      variants={socialMediaIcon.motion}
+                  {links.facebook.length > 0 && (
+                    <Link
+                      className="text-2xl text-zinc-500"
+                      href={links.facebook}
                     >
-                      <FaFacebook />
-                    </motion.div>
-                  </Link>
-
-                  <Link className="text-2xl text-zinc-500" href={'/'}>
-                    <FaInstagram />
-                  </Link>
-
-                  <Link className="text-2xl text-zinc-500" href={'/'}>
-                    <FaYoutube />
-                  </Link>
-
-                  <Link className="text-2xl text-zinc-500" href={'/'}>
-                    <FaLink />
-                  </Link>
+                      <motion.div
+                        style={socialMediaIcon.style}
+                        variants={socialMediaIcon.motion}
+                      >
+                        <FaFacebook />
+                      </motion.div>
+                    </Link>
+                  )}
+                  {links.instagram.length > 0 && (
+                    <Link
+                      className="text-2xl text-zinc-500"
+                      href={links.instagram}
+                    >
+                      <FaInstagram />
+                    </Link>
+                  )}
+                  {links.youtube.length > 0 && (
+                    <Link
+                      className="text-2xl text-zinc-500"
+                      href={links.youtube}
+                    >
+                      <FaYoutube />
+                    </Link>
+                  )}
+                  {links.official.length > 0 && (
+                    <Link
+                      className="text-2xl text-zinc-500"
+                      href={links.official}
+                    >
+                      <FaLink />
+                    </Link>
+                  )}
                 </div>
               </div>
               <Separator />
@@ -164,13 +190,15 @@ export default function TeacherCard() {
               >
                 <Markdown className="prose">{description}</Markdown>
               </ExpandableCardDescription>
-              <iframe
-                src="https://www.youtube.com/embed/OEhVXhjTbsM?si=eZtuzyp7KOQQG09m"
-                width="100%"
-                height="auto"
-                allowFullScreen
-                style={{ aspectRatio: '16/9' }}
-              />
+              {videoLink.length > 0 && (
+                <iframe
+                  src={videoLink}
+                  width="100%"
+                  height="auto"
+                  allowFullScreen
+                  style={{ aspectRatio: '16/9' }}
+                />
+              )}
             </div>
             <ExpandableCardClose className="text-zinc-50" />
           </ExpandableCardContent>
