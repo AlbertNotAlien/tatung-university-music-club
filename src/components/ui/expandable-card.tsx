@@ -313,6 +313,38 @@ function ExpandableCardDescription({
   );
 }
 
+type ExpandableCardItemsWrapperProps = {
+  children: React.ReactNode;
+  className?: string;
+  variants?: {
+    initial: Variant;
+    animate: Variant;
+    exit: Variant;
+  };
+};
+
+function ExpandableCardItemsWrapper({
+  children,
+  className,
+  variants,
+}: ExpandableCardItemsWrapperProps) {
+  const { uniqueId } = useExpandableCard();
+
+  return (
+    <motion.div
+      key={`dialog-block-${uniqueId}`}
+      variants={variants}
+      className={className}
+      initial="initial"
+      animate="animate"
+      exit="exit"
+      id={`dialog-block-${uniqueId}`}
+    >
+      {children}
+    </motion.div>
+  );
+}
+
 type ExpandableCardImageProps = {
   src: string;
   alt: string;
@@ -385,6 +417,7 @@ function ExpandableCardClose({
 }
 
 export {
+  useExpandableCard,
   ExpandableCard,
   ExpandableCardTrigger,
   ExpandableCardContainer,
@@ -393,5 +426,6 @@ export {
   ExpandableCardTitle,
   ExpandableCardSubtitle,
   ExpandableCardDescription,
+  ExpandableCardItemsWrapper,
   ExpandableCardImage,
 };
