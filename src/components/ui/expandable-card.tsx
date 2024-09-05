@@ -10,8 +10,8 @@ import React, {
   useState,
 } from 'react';
 import { createPortal } from 'react-dom';
+import { IoIosClose } from 'react-icons/io';
 import Image from 'next/image';
-import { XIcon } from 'lucide-react';
 import {
   motion,
   AnimatePresence,
@@ -176,7 +176,7 @@ function ExpandableCardContent({
     <motion.div
       ref={containerRef}
       layoutId={`dialog-${uniqueId}`}
-      className={cn('overflow-y-scroll', className)}
+      className={cn(className)}
       style={style}
       role="dialog"
       aria-modal="true"
@@ -405,13 +405,13 @@ function ExpandableCardClose({
       type="button"
       aria-label="Close dialog"
       key={`dialog-close-${uniqueId}`}
-      className={cn('absolute right-4 top-4', className)}
+      className={className}
       initial="initial"
       animate="animate"
       exit="exit"
       variants={variants}
     >
-      {children || <XIcon size={24} />}
+      {children || <IoIosClose size={48} />}
     </motion.button>
   );
 }
