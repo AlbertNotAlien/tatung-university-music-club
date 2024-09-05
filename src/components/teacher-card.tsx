@@ -139,10 +139,9 @@ export default function TeacherCard({
     animate: { opacity: 1, scale: 1, y: 0 },
     exit: { opacity: 0, scale: 0.8, y: 100 },
   };
-
   return (
     <motion.div
-      className={cn('h-auto w-full p-0', 'md:min-w-[360px] md:p-4')}
+      className={cn('h-auto w-full snap-start p-0', 'md:min-w-[360px] md:p-4')}
       whileHover="hover"
     >
       <ExpandableCard
