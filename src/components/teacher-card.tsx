@@ -16,33 +16,17 @@ import {
   ExpandableCardDescription,
   ExpandableCardItemsWrapper,
   ExpandableCardContainer,
-  useExpandableCard,
 } from '@/components/ui/expandable-card';
 import { Separator } from '@/components/ui/separator';
 
 // TODO: Social Media Links icons style seem a little bit incongruous, maybe it could be change in future.
 
-const socialMediaIcon = {
-  style: {
-    color: '#71717a',
-  },
-  motion: {
-    hover: {
-      color: '#18181b',
-      transition: {
-        duration: 0.2,
-      },
-    },
-  },
-};
-
 const triggerCard = {
-  style: {
-    borderRadius: '12px',
+  defaultStyle: {
     boxShadow: '2px 4px 12px #00000014',
     filter: 'grayscale(100%)',
   },
-  motion: {
+  hoverMotion: {
     hover: {
       scale: 1.01,
       boxShadow: '2px 4px 16px #00000026',
@@ -54,13 +38,13 @@ const triggerCard = {
   },
 };
 
-const descriptionMotion = {
+const descriptionAppearMotion = {
   initial: { opacity: 0, scale: 0.8, y: 100 },
   animate: { opacity: 1, scale: 1, y: 0 },
   exit: { opacity: 0, scale: 0.8, y: 100 },
 };
 
-const socialMediaMotion = {
+const socialMediaAppearMotion = {
   initial: { opacity: 0, y: 100 },
   animate: { opacity: 1, y: 0 },
   exit: { opacity: 0, y: 100 },
@@ -75,68 +59,51 @@ type SocialMediaLinksProps = {
 
 function SocialMediaLinks({ links }: { links: SocialMediaLinksProps }) {
   const { facebook, instagram, youtube, official } = links;
-  const { isOpen } = useExpandableCard();
 
   return (
     <ExpandableCardItemsWrapper
-      variants={socialMediaMotion}
-      className="flex flex-row gap-3"
+      variants={socialMediaAppearMotion}
+      className="flex flex-row items-end gap-3 pb-1"
     >
       {facebook.length > 0 && (
-        <motion.a
-          layout={!isOpen}
-          style={socialMediaIcon.style}
-          variants={socialMediaIcon.motion}
-          whileHover="hover"
-          className="text-2xl text-zinc-500"
+        <a
+          className="text-2xl text-zinc-500 duration-300 hover:text-zinc-900 dark:hover:text-zinc-200"
           href={facebook}
           target="_blank"
           rel="noreferrer"
         >
           <FaFacebookF />
-        </motion.a>
+        </a>
       )}
       {instagram.length > 0 && (
-        <motion.a
-          layout={!isOpen}
-          style={socialMediaIcon.style}
-          variants={socialMediaIcon.motion}
-          whileHover="hover"
-          className="text-2xl text-zinc-500"
+        <a
+          className="text-2xl text-zinc-500 duration-300 hover:text-zinc-900 dark:hover:text-zinc-200"
           href={instagram}
           target="_blank"
           rel="noreferrer"
         >
           <FaInstagram />
-        </motion.a>
+        </a>
       )}
       {youtube.length > 0 && (
-        <motion.a
-          layout={!isOpen}
-          style={socialMediaIcon.style}
-          variants={socialMediaIcon.motion}
-          whileHover="hover"
-          className="text-2xl text-zinc-500"
+        <a
+          className="text-2xl text-zinc-500 duration-300 hover:text-zinc-900 dark:hover:text-zinc-200"
           href={youtube}
           target="_blank"
           rel="noreferrer"
         >
           <FaYoutube />
-        </motion.a>
+        </a>
       )}
       {official.length > 0 && (
-        <motion.a
-          layout={!isOpen}
-          style={socialMediaIcon.style}
-          variants={socialMediaIcon.motion}
-          whileHover="hover"
-          className="text-2xl text-zinc-500"
+        <a
+          className="text-2xl text-zinc-500 duration-300 hover:text-zinc-900 dark:hover:text-zinc-200"
           href={official}
           target="_blank"
           rel="noreferrer"
         >
           <FaLink />
-        </motion.a>
+        </a>
       )}
     </ExpandableCardItemsWrapper>
   );
@@ -146,7 +113,6 @@ type TeacherListProps = {
   name: string;
   subtitle: string;
   imgSrc: string;
-  bandRole: string;
   description: string;
   videoLink: string;
   links: SocialMediaLinksProps;
@@ -162,7 +128,10 @@ export default function TeacherCard({
 }: TeacherListProps) {
   return (
     <motion.div
-      className={cn('h-auto w-full snap-start p-0', 'md:min-w-[360px] md:p-4')}
+      className={cn(
+        'h-auto min-w-[280px] snap-center px-1.5 py-3',
+        'md:min-w-[360px] md:snap-start md:px-2 md:py-5',
+      )}
       whileHover="hover"
     >
       <ExpandableCard
@@ -173,11 +142,11 @@ export default function TeacherCard({
         }}
       >
         <ExpandableCardTrigger
-          style={triggerCard.style}
-          variants={triggerCard.motion}
+          style={triggerCard.defaultStyle}
+          variants={triggerCard.hoverMotion}
           className={cn(
             'flex flex-col overflow-hidden',
-            'border border-zinc-950/10 bg-white dark:border-zinc-50/10 dark:bg-zinc-900',
+            'rounded-xl border-0 bg-white dark:bg-zinc-900',
           )}
         >
           <ExpandableCardImage
@@ -187,25 +156,26 @@ export default function TeacherCard({
             width={300}
             height={300}
           />
-          <div className="flex flex-grow flex-col items-start justify-between space-y-1.5 p-4">
-            <ExpandableCardTitle className="text-2xl text-zinc-950 dark:text-zinc-50">
-              {name}
-            </ExpandableCardTitle>
-            <ExpandableCardSubtitle className="text-zinc-700 dark:text-zinc-400">
-              {subtitle}
-            </ExpandableCardSubtitle>
+          <div className="flex flex-row justify-between p-6">
+            <div className="flex flex-col gap-3">
+              <ExpandableCardTitle className="text-4xl font-bold text-zinc-950 dark:text-zinc-50">
+                {name}
+              </ExpandableCardTitle>
+              <ExpandableCardSubtitle className="text-sm font-normal text-zinc-700 dark:text-zinc-400">
+                {subtitle}
+              </ExpandableCardSubtitle>
+            </div>
           </div>
         </ExpandableCardTrigger>
         <ExpandableCardContainer>
           <ExpandableCardContent
-            style={{
-              borderRadius: '20px',
-            }}
             className={cn(
-              'no-scrollbar pointer-events-auto relative flex h-full w-full flex-col',
-              'border border-zinc-950/10 bg-white dark:border-zinc-50/10 dark:bg-zinc-900 sm:w-[500px]',
+              'no-scrollbar pointer-events-auto relative flex h-full w-full flex-col overflow-y-scroll',
+              'rounded-xl bg-white dark:bg-zinc-900 sm:w-[550px] md:rounded-2xl',
+              'shadow-[2px_4px_12px_#00000014] dark:shadow-[2px_4px_12px_#00000075]',
             )}
           >
+            <ExpandableCardClose className="absolute right-2 top-2 text-zinc-50" />
             <ExpandableCardImage
               src={imgSrc}
               alt={`${name}_${subtitle}`}
@@ -213,13 +183,13 @@ export default function TeacherCard({
               width={700}
               height={700}
             />
-            <div className="flex flex-col gap-4 p-6">
+            <div className="flex flex-col gap-4 p-8">
               <div className="flex flex-row justify-between">
                 <div className="flex flex-col gap-4">
-                  <ExpandableCardTitle className="text-3xl font-bold text-zinc-950 dark:text-zinc-50">
+                  <ExpandableCardTitle className="text-4xl font-bold text-zinc-950 dark:text-zinc-50">
                     {name}
                   </ExpandableCardTitle>
-                  <ExpandableCardSubtitle className="text-zinc-700 dark:text-zinc-400">
+                  <ExpandableCardSubtitle className="text-sm font-normal text-zinc-700 dark:text-zinc-400">
                     {subtitle}
                   </ExpandableCardSubtitle>
                 </div>
@@ -228,10 +198,17 @@ export default function TeacherCard({
               <Separator />
               <ExpandableCardDescription
                 disableLayoutAnimation
-                variants={descriptionMotion}
+                variants={descriptionAppearMotion}
                 className="flex flex-col gap-4"
               >
-                <Markdown className="prose">{description}</Markdown>
+                <Markdown
+                  className={cn(
+                    'prose prose-p:text-zinc-800 prose-strong:text-zinc-900 prose-ul:text-zinc-700',
+                    'dark:prose-p:text-zinc-300 dark:prose-strong:text-zinc-100 dark:prose-ul:text-zinc-400',
+                  )}
+                >
+                  {description}
+                </Markdown>
               </ExpandableCardDescription>
               {videoLink.length > 0 && (
                 <iframe
@@ -239,12 +216,11 @@ export default function TeacherCard({
                   src={videoLink}
                   width="100%"
                   height="auto"
-                  allowFullScreen
                   className="aspect-video"
+                  allowFullScreen
                 />
               )}
             </div>
-            <ExpandableCardClose className="text-zinc-50" />
           </ExpandableCardContent>
         </ExpandableCardContainer>
       </ExpandableCard>
