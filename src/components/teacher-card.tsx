@@ -170,57 +170,59 @@ export default function TeacherCard({
         <ExpandableCardContainer>
           <ExpandableCardContent
             className={cn(
-              'no-scrollbar pointer-events-auto relative flex h-full w-full flex-col overflow-y-scroll',
+              'pointer-events-auto relative h-full w-full overflow-hidden',
               'rounded-xl bg-white dark:bg-zinc-900 sm:w-[550px] md:rounded-2xl',
               'shadow-[2px_4px_12px_#00000014] dark:shadow-[2px_4px_12px_#00000075]',
             )}
           >
-            <ExpandableCardClose className="absolute right-2 top-2 text-zinc-50" />
-            <ExpandableCardImage
-              src={imgSrc}
-              alt={`${name}_${subtitle}`}
-              className="h-full w-full object-cover"
-              width={700}
-              height={700}
-            />
-            <div className="flex flex-col gap-4 p-8">
-              <div className="flex flex-row justify-between">
-                <div className="flex flex-col gap-4">
-                  <ExpandableCardTitle className="text-4xl font-bold text-zinc-950 dark:text-zinc-50">
-                    {name}
-                  </ExpandableCardTitle>
-                  <ExpandableCardSubtitle className="text-sm font-normal text-zinc-700 dark:text-zinc-400">
-                    {subtitle}
-                  </ExpandableCardSubtitle>
+            <div className="no-scrollbar flex h-full w-full flex-col overflow-y-scroll">
+              <ExpandableCardImage
+                src={imgSrc}
+                alt={`${name}_${subtitle}`}
+                className="h-full w-full object-cover"
+                width={700}
+                height={700}
+              />
+              <div className="flex flex-col gap-4 p-8">
+                <div className="flex flex-row justify-between">
+                  <div className="flex flex-col gap-4">
+                    <ExpandableCardTitle className="text-4xl font-bold text-zinc-950 dark:text-zinc-50">
+                      {name}
+                    </ExpandableCardTitle>
+                    <ExpandableCardSubtitle className="text-sm font-normal text-zinc-700 dark:text-zinc-400">
+                      {subtitle}
+                    </ExpandableCardSubtitle>
+                  </div>
+                  <SocialMediaLinks links={links} />
                 </div>
-                <SocialMediaLinks links={links} />
-              </div>
-              <Separator />
-              <ExpandableCardDescription
-                disableLayoutAnimation
-                variants={descriptionAppearMotion}
-                className="flex flex-col gap-4"
-              >
-                <Markdown
-                  className={cn(
-                    'prose prose-p:text-zinc-800 prose-strong:text-zinc-900 prose-ul:text-zinc-700',
-                    'dark:prose-p:text-zinc-300 dark:prose-strong:text-zinc-100 dark:prose-ul:text-zinc-400',
-                  )}
+                <Separator />
+                <ExpandableCardDescription
+                  disableLayoutAnimation
+                  variants={descriptionAppearMotion}
+                  className="flex flex-col gap-4"
                 >
-                  {description}
-                </Markdown>
-              </ExpandableCardDescription>
-              {videoLink.length > 0 && (
-                <iframe
-                  title={`${name}_video`}
-                  src={videoLink}
-                  width="100%"
-                  height="auto"
-                  className="aspect-video"
-                  allowFullScreen
-                />
-              )}
+                  <Markdown
+                    className={cn(
+                      'prose prose-p:text-zinc-800 prose-strong:text-zinc-900 prose-ul:text-zinc-700',
+                      'dark:prose-p:text-zinc-300 dark:prose-strong:text-zinc-100 dark:prose-ul:text-zinc-400',
+                    )}
+                  >
+                    {description}
+                  </Markdown>
+                </ExpandableCardDescription>
+                {videoLink.length > 0 && (
+                  <iframe
+                    title={`${name}_video`}
+                    src={videoLink}
+                    width="100%"
+                    height="auto"
+                    className="aspect-video"
+                    allowFullScreen
+                  />
+                )}
+              </div>
             </div>
+            <ExpandableCardClose className="absolute right-2 top-2 text-zinc-50" />
           </ExpandableCardContent>
         </ExpandableCardContainer>
       </ExpandableCard>
