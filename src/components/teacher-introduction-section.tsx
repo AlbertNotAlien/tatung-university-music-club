@@ -6,7 +6,7 @@ import { teacherList } from '@/data/teacher-list';
 
 export default function TeacherIntroductionSection() {
   return (
-    <section className="no-scrollbar flex snap-x snap-mandatory flex-row overflow-y-scroll">
+    <section className="no-scrollbar flex snap-x snap-mandatory flex-row overflow-x-scroll">
       {teacherList.map((teacher) => (
         <TeacherCard key={teacher.id} {...teacher} />
       ))}
