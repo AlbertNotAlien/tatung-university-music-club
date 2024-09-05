@@ -1,6 +1,8 @@
 'use client';
 
 import React from 'react';
+import Markdown from 'react-markdown';
+import { FaInstagram, FaYoutube, FaLink, FaFacebookF } from 'react-icons/fa';
 import { motion } from 'framer-motion';
 import { cn } from '@/lib/utils';
 import {
@@ -15,8 +17,48 @@ import {
   ExpandableCardContainer,
 } from '@/components/ui/expandable-card';
 import { Separator } from '@radix-ui/react-dropdown-menu';
-import { FaFacebook, FaInstagram, FaYoutube, FaLink } from 'react-icons/fa';
-import Markdown from 'react-markdown';
+
+// TODO: Social Media Links icons style seem a little bit incongruous, maybe it could be change in future.
+
+const socialMediaIcon = {
+  style: {
+    boxShadow: 'none',
+    color: '#71717a',
+  },
+  motion: {
+    hover: {
+      color: '#18181b',
+      boxShadow: '1px 2px 8px #00000010',
+      transition: {
+        duration: 0.2,
+      },
+    },
+  },
+};
+
+const triggerCard = {
+  style: {
+    borderRadius: '12px',
+    boxShadow: '2px 4px 12px #00000014',
+    filter: 'grayscale(100%)',
+  },
+  motion: {
+    hover: {
+      scale: 1.01,
+      boxShadow: '2px 4px 16px #00000026',
+      filter: 'grayscale(0)',
+      transition: {
+        duration: 0.2,
+      },
+    },
+  },
+};
+
+const descriptionMotion = {
+  initial: { opacity: 0, scale: 0.8, y: 100 },
+  animate: { opacity: 1, scale: 1, y: 0 },
+  exit: { opacity: 0, scale: 0.8, y: 100 },
+};
 
 type SocialMediaLinksProps = {
   facebook: string;
@@ -28,71 +70,63 @@ type SocialMediaLinksProps = {
 function SocialMediaLinks({ links }: { links: SocialMediaLinksProps }) {
   const { facebook, instagram, youtube, official } = links;
 
-  const socialMediaIcon = {
-    style: {
-      boxShadow: 'none',
-      color: '#71717a',
-    },
-    motion: {
-      hover: {
-        color: '#18181b',
-        boxShadow: '1px 2px 8px #00000010',
-        transition: {
-          duration: 0.2,
-        },
-      },
-    },
-  };
-
   return (
     <motion.div className="relative bottom-0 flex h-fit flex-row gap-3">
       {facebook.length > 0 && (
-        <a className="text-2xl text-zinc-500" href={facebook} target="_blank">
-          <motion.div
-            layout
-            style={socialMediaIcon.style}
-            variants={socialMediaIcon.motion}
-            whileHover="hover"
-          >
-            <FaFacebook />
-          </motion.div>
-        </a>
+        <motion.a
+          layout
+          style={socialMediaIcon.style}
+          variants={socialMediaIcon.motion}
+          whileHover="hover"
+          className="text-2xl text-zinc-500"
+          href={facebook}
+          target="_blank"
+          rel="noreferrer"
+        >
+          <FaFacebookF />
+        </motion.a>
       )}
       {instagram.length > 0 && (
-        <a className="text-2xl text-zinc-500" href={instagram} target="_blank">
-          <motion.div
-            layout
-            style={socialMediaIcon.style}
-            variants={socialMediaIcon.motion}
-            whileHover="hover"
-          >
-            <FaInstagram />
-          </motion.div>
-        </a>
+        <motion.a
+          layout
+          style={socialMediaIcon.style}
+          variants={socialMediaIcon.motion}
+          whileHover="hover"
+          className="text-2xl text-zinc-500"
+          href={instagram}
+          target="_blank"
+          rel="noreferrer"
+        >
+          <FaInstagram />
+        </motion.a>
       )}
       {youtube.length > 0 && (
-        <a className="text-2xl text-zinc-500" href={youtube} target="_blank">
-          <motion.div
-            layout
-            style={socialMediaIcon.style}
-            variants={socialMediaIcon.motion}
-            whileHover="hover"
-          >
-            <FaYoutube />
-          </motion.div>
-        </a>
+        <motion.a
+          layout
+          style={socialMediaIcon.style}
+          variants={socialMediaIcon.motion}
+          whileHover="hover"
+          className="text-2xl text-zinc-500"
+          href={youtube}
+          target="_blank"
+          rel="noreferrer"
+        >
+          <FaYoutube />
+        </motion.a>
       )}
       {official.length > 0 && (
-        <a className="text-2xl text-zinc-500" href={official} target="_blank">
-          <motion.div
-            layout
-            style={socialMediaIcon.style}
-            variants={socialMediaIcon.motion}
-            whileHover="hover"
-          >
-            <FaLink />
-          </motion.div>
-        </a>
+        <motion.a
+          layout
+          style={socialMediaIcon.style}
+          variants={socialMediaIcon.motion}
+          whileHover="hover"
+          className="text-2xl text-zinc-500"
+          href={official}
+          target="_blank"
+          rel="noreferrer"
+        >
+          <FaLink />
+        </motion.a>
       )}
     </motion.div>
   );
@@ -116,29 +150,6 @@ export default function TeacherCard({
   videoLink,
   links,
 }: TeacherListProps) {
-  const triggerCard = {
-    style: {
-      borderRadius: '12px',
-      boxShadow: '2px 4px 12px #00000014',
-      filter: 'grayscale(100%)',
-    },
-    motion: {
-      hover: {
-        scale: 1.01,
-        boxShadow: '2px 4px 16px #00000026',
-        filter: 'grayscale(0)',
-        transition: {
-          duration: 0.2,
-        },
-      },
-    },
-  };
-
-  const descriptionMotion = {
-    initial: { opacity: 0, scale: 0.8, y: 100 },
-    animate: { opacity: 1, scale: 1, y: 0 },
-    exit: { opacity: 0, scale: 0.8, y: 100 },
-  };
   return (
     <motion.div
       className={cn('h-auto w-full snap-start p-0', 'md:min-w-[360px] md:p-4')}
@@ -214,11 +225,12 @@ export default function TeacherCard({
               </ExpandableCardDescription>
               {videoLink.length > 0 && (
                 <iframe
+                  title={`${name}_video`}
                   src={videoLink}
                   width="100%"
                   height="auto"
                   allowFullScreen
-                  style={{ aspectRatio: '16/9' }}
+                  className="aspect-video"
                 />
               )}
             </div>
