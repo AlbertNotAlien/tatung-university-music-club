@@ -14,21 +14,21 @@ import {
   ExpandableCardSubtitle,
   ExpandableCardClose,
   ExpandableCardDescription,
+  ExpandableCardItemsWrapper,
   ExpandableCardContainer,
+  useExpandableCard,
 } from '@/components/ui/expandable-card';
-import { Separator } from '@radix-ui/react-dropdown-menu';
+import { Separator } from '@/components/ui/separator';
 
 // TODO: Social Media Links icons style seem a little bit incongruous, maybe it could be change in future.
 
 const socialMediaIcon = {
   style: {
-    boxShadow: 'none',
     color: '#71717a',
   },
   motion: {
     hover: {
       color: '#18181b',
-      boxShadow: '1px 2px 8px #00000010',
       transition: {
         duration: 0.2,
       },
@@ -60,6 +60,12 @@ const descriptionMotion = {
   exit: { opacity: 0, scale: 0.8, y: 100 },
 };
 
+const socialMediaMotion = {
+  initial: { opacity: 0, y: 100 },
+  animate: { opacity: 1, y: 0 },
+  exit: { opacity: 0, y: 100 },
+};
+
 type SocialMediaLinksProps = {
   facebook: string;
   instagram: string;
@@ -69,12 +75,16 @@ type SocialMediaLinksProps = {
 
 function SocialMediaLinks({ links }: { links: SocialMediaLinksProps }) {
   const { facebook, instagram, youtube, official } = links;
+  const { isOpen } = useExpandableCard();
 
   return (
-    <motion.div className="relative bottom-0 flex h-fit flex-row gap-3">
+    <ExpandableCardItemsWrapper
+      variants={socialMediaMotion}
+      className="flex flex-row gap-3"
+    >
       {facebook.length > 0 && (
         <motion.a
-          layout
+          layout={!isOpen}
           style={socialMediaIcon.style}
           variants={socialMediaIcon.motion}
           whileHover="hover"
@@ -88,7 +98,7 @@ function SocialMediaLinks({ links }: { links: SocialMediaLinksProps }) {
       )}
       {instagram.length > 0 && (
         <motion.a
-          layout
+          layout={!isOpen}
           style={socialMediaIcon.style}
           variants={socialMediaIcon.motion}
           whileHover="hover"
@@ -102,7 +112,7 @@ function SocialMediaLinks({ links }: { links: SocialMediaLinksProps }) {
       )}
       {youtube.length > 0 && (
         <motion.a
-          layout
+          layout={!isOpen}
           style={socialMediaIcon.style}
           variants={socialMediaIcon.motion}
           whileHover="hover"
@@ -116,7 +126,7 @@ function SocialMediaLinks({ links }: { links: SocialMediaLinksProps }) {
       )}
       {official.length > 0 && (
         <motion.a
-          layout
+          layout={!isOpen}
           style={socialMediaIcon.style}
           variants={socialMediaIcon.motion}
           whileHover="hover"
@@ -128,7 +138,7 @@ function SocialMediaLinks({ links }: { links: SocialMediaLinksProps }) {
           <FaLink />
         </motion.a>
       )}
-    </motion.div>
+    </ExpandableCardItemsWrapper>
   );
 }
 
