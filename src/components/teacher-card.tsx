@@ -2,7 +2,6 @@
 
 import React from 'react';
 import Markdown from 'react-markdown';
-import { FaInstagram, FaYoutube, FaLink, FaFacebookF } from 'react-icons/fa';
 import { motion } from 'framer-motion';
 import { cn } from '@/lib/utils';
 import {
@@ -18,8 +17,12 @@ import {
   ExpandableCardContainer,
 } from '@/components/ui/expandable-card';
 import { Separator } from '@/components/ui/separator';
-
-// TODO: Social Media Links icons style seem a little bit incongruous, maybe it could be change in future.
+import {
+  FacebookIcon,
+  InstagramIcon,
+  YoutubeIcon,
+  LinkIcon,
+} from '@/components/icons/social-media';
 
 const triggerCard = {
   defaultStyle: {
@@ -63,46 +66,46 @@ function SocialMediaLinks({ links }: { links: SocialMediaLinksProps }) {
   return (
     <ExpandableCardItemsWrapper
       variants={socialMediaAppearMotion}
-      className="flex flex-row items-end gap-3 pb-1"
+      className="flex flex-row items-start gap-2"
     >
       {facebook.length > 0 && (
         <a
-          className="text-2xl text-zinc-500 duration-300 hover:text-zinc-900 dark:hover:text-zinc-200"
+          className="fill-zinc-500 text-2xl duration-300 hover:fill-zinc-900 dark:hover:fill-zinc-200"
           href={facebook}
           target="_blank"
           rel="noreferrer"
         >
-          <FaFacebookF />
+          <FacebookIcon />
         </a>
       )}
       {instagram.length > 0 && (
         <a
-          className="text-2xl text-zinc-500 duration-300 hover:text-zinc-900 dark:hover:text-zinc-200"
+          className="fill-zinc-500 text-2xl duration-300 hover:fill-zinc-900 dark:hover:fill-zinc-200"
           href={instagram}
           target="_blank"
           rel="noreferrer"
         >
-          <FaInstagram />
+          <InstagramIcon />
         </a>
       )}
       {youtube.length > 0 && (
         <a
-          className="text-2xl text-zinc-500 duration-300 hover:text-zinc-900 dark:hover:text-zinc-200"
+          className="fill-zinc-500 text-2xl duration-300 hover:fill-zinc-900 dark:hover:fill-zinc-200"
           href={youtube}
           target="_blank"
           rel="noreferrer"
         >
-          <FaYoutube />
+          <YoutubeIcon />
         </a>
       )}
       {official.length > 0 && (
         <a
-          className="text-2xl text-zinc-500 duration-300 hover:text-zinc-900 dark:hover:text-zinc-200"
+          className="fill-zinc-500 text-2xl duration-300 hover:fill-zinc-900 dark:hover:fill-zinc-200"
           href={official}
           target="_blank"
           rel="noreferrer"
         >
-          <FaLink />
+          <LinkIcon />
         </a>
       )}
     </ExpandableCardItemsWrapper>
