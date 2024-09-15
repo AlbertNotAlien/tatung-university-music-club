@@ -38,7 +38,7 @@ export default function RootLayout({
         >
           <Header />
           <div className="flex min-h-[calc(100dvh-4rem)] flex-col">
-            <main className="container flex-1">{children}</main>
+            <main className="container flex flex-1 flex-col">{children}</main>
             <Footer />
           </div>
         </ThemeProvider>
