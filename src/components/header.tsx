@@ -1,17 +1,15 @@
-'use client';
-
 import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
-import { cn } from '@/lib/utils';
+import { auth } from '@/auth';
+import { Icon } from '@/components/icon';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import Navigation from '@/components/navigation';
+import ProfileDropdownMenu from '@/components/profile-dropdown-menu';
 
-export default function Header() {
-  const pathname = usePathname();
-  const checkActivePath = (path: string) => path === pathname;
+export default async function Header() {
+  const session = await auth();
 
   return (
     <header className="container sticky top-0 z-10 flex h-16 items-center gap-4 border-b bg-background">
@@ -70,22 +68,13 @@ export default function Header() {
           <Icon name="settings" className="h-5 w-5" />
           <span className="sr-only">Settings</span>
         </Button>
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" size="icon" className="rounded-full">
-              <Icon name="circle-user-round" className="h-5 w-5" />
-              <span className="sr-only">Toggle user menu</span>
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuLabel>My Account</DropdownMenuLabel>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem>Settings</DropdownMenuItem>
-            <DropdownMenuItem>Support</DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem>Logout</DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
+        {session?.user ? (
+          <ProfileDropdownMenu username={session?.user?.name} />
+        ) : (
+          <Link href="/signin">
+            <Button type="submit">Sign in</Button>
+          </Link>
+        )}
       </div>
       <Link href="/" className="absolute left-1/2 -translate-x-1/2 md:hidden">
         <Image
