@@ -1,9 +1,18 @@
 import NextAuth, { User } from 'next-auth';
 import Google from 'next-auth/providers/google';
+import Credentials from 'next-auth/providers/credentials';
 import { getUserByEmail, addUser } from './lib/firebase/api';
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
-  providers: [Google],
+  providers: [
+    Google,
+    Credentials({
+      async authorize(credentials) {
+        const user = JSON.parse(credentials.user as string) as User;
+        return user || null;
+      },
+    }),
+  ],
   callbacks: {
     async signIn({ account, user, profile }) {
       if (!user || !user.email?.length) return false;

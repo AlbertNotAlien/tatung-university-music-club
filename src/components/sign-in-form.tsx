@@ -2,10 +2,13 @@
 
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { sendSignInLinkToEmail } from 'firebase/auth';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { signInSchema } from '@/lib/zod';
+import { firebaseAuth } from '@/lib/firebase/firebase-app';
 import { Icons } from '@/components/icons';
+import { toast } from '@/components/ui/use-toast';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import {
@@ -15,6 +18,10 @@ import {
   FormItem,
   FormMessage,
 } from '@/components/ui/form';
+
+const actionCodeSettings = {
+  handleCodeInApp: true,
+};
 
 export default function SignInForm() {
   const form = useForm<z.infer<typeof signInSchema>>({
@@ -26,6 +33,19 @@ export default function SignInForm() {
   const [isLoading, setIsLoading] = useState(false);
 
   const onSubmit = async (values: z.infer<typeof signInSchema>) => {
+    try {
+      setIsLoading(true);
+      await sendSignInLinkToEmail(firebaseAuth, values.email, {
+        ...actionCodeSettings,
+        url: `${window.location.origin}/signin-confirm`,
+      });
+      window.localStorage.setItem('emailForSignIn', values.email);
+    } catch (error) {
+      toast({
+        title: 'Something went wrong',
+        description: 'An error occurred. Please try again.',
+      });
+    }
   };
 
   return (
