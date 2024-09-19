@@ -44,6 +44,7 @@ export default function Header() {
         </Link>
         {navLinks.map((link) => (
           <Link
+            key={link.path}
             href={link.path}
             className={cn(
               'transition-colors hover:text-foreground',
