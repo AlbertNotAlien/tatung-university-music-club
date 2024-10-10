@@ -2,7 +2,8 @@
 
 import React from 'react';
 import { ChevronsUp, Plus } from 'lucide-react';
-import { Event } from '@/lib/firebase/firestore-api';
+import { Timestamp } from 'firebase/firestore';
+import { BookingWithUserInfo } from '@/lib/firebase/api';
 import {
   Table,
   TableHeader,
@@ -36,7 +37,6 @@ const HOURS_OF_DAY = [
   { value: '02:00', label: '2 AM' },
   { value: '03:00', label: '3 AM' },
   { value: '04:00', label: '4 AM' },
-
   { value: '05:00', label: '5 AM' },
   { value: '06:00', label: '6 AM' },
   { value: '07:00', label: '7 AM' },
@@ -61,6 +61,7 @@ const HOURS_OF_DAY = [
 function generateWeekDatesFromDate(date: Date): Date[] {
   const startOfWeek = new Date(date);
   startOfWeek.setDate(startOfWeek.getDate() - startOfWeek.getDay());
+  startOfWeek.setHours(0, 0, 0, 0);
 
   return Array.from({ length: 7 }, (_, index) => {
     const currentDate = new Date(startOfWeek);
@@ -69,23 +70,43 @@ function generateWeekDatesFromDate(date: Date): Date[] {
   });
 }
 
-function findEventByHour(events: Event[], date: Date, hour: string) {
-  return events.find(
-    (event) =>
-      event.date.year === date.getFullYear() &&
-      event.date.month === date.getMonth() &&
-      event.date.date === date.getDate() &&
-      event.times.includes(hour),
-  );
+function parseHourString(hour: string): { hours: number; minutes: number } {
+  const [hours, minutes] = hour.split(':').map(Number);
+  return { hours, minutes };
+}
+
+function getBookingTimestamp(booking: BookingWithUserInfo): number | undefined {
+  if (!booking) return undefined;
+
+  const { seconds, nanoseconds } = booking.timeInfo.startTime;
+  const bookingTimestamp = new Timestamp(seconds, nanoseconds);
+  const bookingDate = bookingTimestamp.toDate();
+  bookingDate.setSeconds(0, 0);
+  return bookingDate.getTime();
 }
 
 type BookingCalendarProps = {
-  events: Event[] | undefined;
+  bookings: BookingWithUserInfo[] | undefined;
 };
 
-export function BookingCalendar({ events = [] }: BookingCalendarProps) {
+export function BookingCalendar({ bookings = [] }: BookingCalendarProps) {
   const selectedDate = new Date();
   const selectedWeek = generateWeekDatesFromDate(selectedDate);
+
+  const findBookedData = (
+    date: Date,
+    hour: string,
+  ): BookingWithUserInfo | undefined => {
+    const { hours, minutes } = parseHourString(hour);
+    const dateWithHour = new Date(date);
+    dateWithHour.setHours(hours, minutes);
+
+    const selectedTime = dateWithHour.getTime();
+
+    return bookings.find(
+      (booking) => getBookingTimestamp(booking) === selectedTime,
+    );
+  };
 
   return (
     <div className="w-full">
@@ -123,7 +144,7 @@ export function BookingCalendar({ events = [] }: BookingCalendarProps) {
                 {hour.label}
               </TableCell>
               {selectedWeek.map((date) => {
-                const bookedData = findEventByHour(events, date, hour.value);
+                const bookedData = findBookedData(date, hour.value);
                 return (
                   <TableCell
                     key={date.toString()}
@@ -135,7 +156,7 @@ export function BookingCalendar({ events = [] }: BookingCalendarProps) {
                         className="h-10 max-h-10 w-full whitespace-normal px-1 py-0"
                       >
                         <p className="text-2xs line-clamp-2 md:line-clamp-1 md:text-xs">
-                          {bookedData.bandName}
+                          {bookedData.userInfo.roomUser.name || 'Unknown'}
                         </p>
                       </Button>
                     ) : (

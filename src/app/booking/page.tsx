@@ -1,9 +1,9 @@
 import React from 'react';
 import { BookingCalendar } from '@/components/booking-calendar';
-import { getEvents } from '@/lib/firebase/firestore-api';
+import { fetchBookings } from '@/lib/firebase/api';
 
 export default async function Page() {
-  const events = await getEvents();
+  const bookings = await fetchBookings();
 
-  return <BookingCalendar events={events} />;
+  return <BookingCalendar bookings={bookings} />;
 }
