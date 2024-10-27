@@ -22,6 +22,7 @@ import {
   FormItem,
   FormLabel,
 } from '@/components/ui/form';
+import { Profile } from '@/lib/firebase/api/profile';
 
 const identityList = [
   '-- Please select --',
@@ -30,17 +31,10 @@ const identityList = [
   'Already graduated',
 ];
 
-const profileValues = {
-  firstName: 'Siew Fui',
-  lastName: 'Haw',
-  displayName: 'stanleyhaw94',
-  identity: identityList[0],
-};
-
-function EditProfileForm() {
+function EditProfileForm({ profile }: { profile: Profile | undefined }) {
   const form = useForm<z.infer<typeof profileSchema>>({
     resolver: zodResolver(profileSchema),
-    defaultValues: profileValues,
+    defaultValues: profile,
   });
 
   const { control, handleSubmit } = form;
@@ -124,38 +118,48 @@ function EditProfileForm() {
   );
 }
 
-function ProfileTable() {
+function ProfileTable({ profile }: { profile: Profile | undefined }) {
+  if (!profile) return null;
+
+  const { firstName, lastName, displayName, identity } = profile;
+
   return (
     <div className="flex flex-col gap-4">
       <div className="mt-0 grid h-10 grid-cols-2 items-center">
         <p className="space-y-0 text-base font-semibold text-zinc-600 dark:text-zinc-400">
           First name
         </p>
-        <p className="text-black dark:text-zinc-50">Siew Fui</p>
+        <p className="text-black dark:text-zinc-50">{firstName || null}</p>
       </div>
       <div className="mt-0 grid h-10 grid-cols-2 items-center">
         <p className="space-y-0 text-base font-semibold text-zinc-600 dark:text-zinc-400">
           Last name
         </p>
-        <p className="text-black dark:text-zinc-50">Haw</p>
+        <p className="text-black dark:text-zinc-50"> {lastName || null}</p>
       </div>
       <div className="mt-0 grid h-10 grid-cols-2 items-center">
         <p className="space-y-0 text-base font-semibold text-zinc-600 dark:text-zinc-400">
           Display name
         </p>
-        <p className="text-black dark:text-zinc-50">stanleyhaw94</p>
+        <p className="text-black dark:text-zinc-50"> {displayName || null}</p>
       </div>
       <div className="mt-0 grid h-10 grid-cols-2 items-center">
         <p className="space-y-0 text-base font-semibold text-zinc-600 dark:text-zinc-400">
           Identity
         </p>
-        <p className="text-black dark:text-zinc-50">Already graduated</p>
+        <p className="text-black dark:text-zinc-50">
+          {identity || '-- Please select --'}
+        </p>
       </div>
     </div>
   );
 }
 
-export default function ProfileContent() {
+export default function ProfileContent({
+  profile,
+}: {
+  profile: Profile | undefined;
+}) {
   const [isEditStatus, setIsEditStatus] = useState(true);
 
   const ChangeEditStatus = () => {
@@ -176,7 +180,11 @@ export default function ProfileContent() {
           </div>
         )}
       </div>
-      {isEditStatus ? <ProfileTable /> : <EditProfileForm />}
+      {isEditStatus ? (
+        <ProfileTable profile={profile} />
+      ) : (
+        <EditProfileForm profile={profile} />
+      )}
     </div>
   );
 }
