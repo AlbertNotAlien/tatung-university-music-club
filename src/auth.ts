@@ -2,8 +2,17 @@ import NextAuth, { User } from 'next-auth';
 import Google from 'next-auth/providers/google';
 import Credentials from 'next-auth/providers/credentials';
 import { getUserByEmail, addUser } from './lib/firebase/api';
+import { FirestoreAdapter } from '@auth/firebase-adapter';
+import { cert } from 'firebase-admin/app';
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
+  adapter: FirestoreAdapter({
+    credential: cert({
+      projectId: process.env.AUTH_FIREBASE_PROJECT_ID,
+      clientEmail: process.env.AUTH_FIREBASE_CLIENT_EMAIL,
+      privateKey: process.env.AUTH_FIREBASE_PRIVATE_KEY!.replace(/\\n/g, '\n'),
+    }),
+  }),
   providers: [
     Google,
     Credentials({
@@ -41,6 +50,16 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         }
       }
       return true;
+    },
+    jwt({ token, user }) {
+      if (user) {
+        token.id = user.id;
+      }
+      return token;
+    },
+    session({ session, token }) {
+      session.user.id = token.id as string;
+      return session;
     },
   },
   session: {

@@ -53,7 +53,7 @@ export default function SignUpForm() {
         const userCredential = await createUserWithEmailAndPassword(
           firebaseAuth,
           values.email,
-          '',
+          'TemporaryPassword123',
         );
         await addUser(userCredential.user.uid, {
           email: values.email,
@@ -78,6 +78,7 @@ export default function SignUpForm() {
         );
       }
     } catch (error) {
+      console.error(error);
       toast({
         title: 'Something went wrong.',
         description: `Your sign up request failed. Please try again. ${error}`,
