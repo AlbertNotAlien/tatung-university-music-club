@@ -1,5 +1,4 @@
 import React from 'react';
-import Image from 'next/image';
 import Link from 'next/link';
 import { LuMenuSquare } from 'react-icons/lu';
 import { IoIosSettings } from 'react-icons/io';
@@ -8,6 +7,7 @@ import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import Navigation from '@/components/navigation';
 import ProfileDropdownMenu from '@/components/profile-dropdown-menu';
 import { auth } from '@/auth';
+import HeaderLogo from './header-logo';
 
 export default async function Header() {
   const session = await auth();
@@ -19,13 +19,7 @@ export default async function Header() {
           href="/"
           className="flex h-8 w-8 items-center gap-2 text-lg font-semibold md:text-base"
         >
-          <Image
-            src="/ttumc-logo.svg"
-            alt="ttumc-logo"
-            width={36}
-            height={36}
-            priority
-          />
+          <HeaderLogo />
           <span className="sr-only">TTUMC</span>
         </Link>
         <Navigation />
@@ -78,13 +72,7 @@ export default async function Header() {
         )}
       </div>
       <Link href="/" className="absolute left-1/2 -translate-x-1/2 md:hidden">
-        <Image
-          src="/ttumc-logo.svg"
-          alt="ttumc-logo"
-          width={40}
-          height={40}
-          priority
-        />
+        <HeaderLogo />
       </Link>
     </header>
   );
