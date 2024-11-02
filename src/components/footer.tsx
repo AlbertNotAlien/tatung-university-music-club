@@ -2,7 +2,8 @@ import * as React from 'react';
 import Link from 'next/link';
 import { cn } from '@/lib/utils';
 import { siteConfig } from '@/config/site';
-import { Icon } from '@/components/icon';
+
+import { FaFacebook, FaInstagram, FaYoutube, FaGithub } from 'react-icons/fa';
 import { AppearanceToggle } from '@/components/appearance-toggle';
 
 export default function Footer({
@@ -22,7 +23,7 @@ export default function Footer({
           rel="noreferrer"
           className="font-medium underline underline-offset-4 opacity-60 transition-opacity hover:opacity-100"
         >
-          <Icon name="facebook" />
+          <FaFacebook size={24} />
         </Link>
         <Link
           href={siteConfig.links.instagram}
@@ -30,7 +31,7 @@ export default function Footer({
           rel="noreferrer"
           className="font-medium underline underline-offset-4 opacity-60 transition-opacity hover:opacity-100"
         >
-          <Icon name="instagram" />
+          <FaInstagram size={24} />
         </Link>
         <Link
           href={siteConfig.links.youtube}
@@ -38,7 +39,7 @@ export default function Footer({
           rel="noreferrer"
           className="font-medium underline underline-offset-4 opacity-60 transition-opacity hover:opacity-100"
         >
-          <Icon name="youtube" />
+          <FaYoutube size={24} />
         </Link>
         <Link
           href={siteConfig.links.github}
@@ -46,7 +47,7 @@ export default function Footer({
           rel="noreferrer"
           className="font-medium underline underline-offset-4 opacity-60 transition-opacity hover:opacity-100"
         >
-          <Icon name="github" />
+          <FaGithub size={24} />
         </Link>
       </div>
       <AppearanceToggle />
