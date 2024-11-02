@@ -2,7 +2,8 @@
 
 import React from 'react';
 import { signOut } from 'next-auth/react';
-import { Icon } from '@/components/icon';
+import { FaUser } from 'react-icons/fa';
+
 import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
@@ -24,7 +25,7 @@ export default function ProfileDropdownMenu({
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button variant="ghost" size="icon" className="rounded-full">
-          <Icon name="circle-user-round" className="h-5 w-5" />
+          <FaUser />
           <span className="sr-only">Toggle user menu</span>
         </Button>
       </DropdownMenuTrigger>
