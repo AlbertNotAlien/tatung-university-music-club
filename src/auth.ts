@@ -23,7 +23,6 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
               image: user.image,
               firstName: profile ? profile.given_name : '',
               lastName: profile ? profile.family_name : '',
-              emailVerified: false,
             });
           }
         } catch (error) {

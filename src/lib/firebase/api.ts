@@ -145,7 +145,6 @@ export type User = {
   lastName: string | null | undefined;
   displayName: string | null | undefined;
   image: string | null | undefined;
-  emailVerified: boolean | null | undefined;
 };
 
 export async function getUserByEmail({ email }: { email: string }) {
@@ -172,7 +171,6 @@ export async function addUser(
     lastName = '',
     displayName = '',
     image = '',
-    emailVerified = false,
   }: Omit<User, 'id'>,
 ) {
   try {
@@ -184,7 +182,6 @@ export async function addUser(
       lastName,
       displayName,
       image,
-      emailVerified,
     });
   } catch (error) {
     console.error('[Firestore] Failed to sign up: ', error);
