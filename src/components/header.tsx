@@ -1,12 +1,13 @@
 import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { auth } from '@/auth';
-import { Icon } from '@/components/icon';
+import { LuMenuSquare } from 'react-icons/lu';
+import { IoIosSettings } from 'react-icons/io';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import Navigation from '@/components/navigation';
 import ProfileDropdownMenu from '@/components/profile-dropdown-menu';
+import { auth } from '@/auth';
 
 export default async function Header() {
   const session = await auth();
@@ -32,7 +33,7 @@ export default async function Header() {
       <Sheet>
         <SheetTrigger asChild>
           <Button variant="outline" size="icon" className="shrink-0 md:hidden">
-            <Icon name="menu" className="h-5 w-5" />
+            <LuMenuSquare />
             <span className="sr-only">Toggle navigation menu</span>
           </Button>
         </SheetTrigger>
@@ -42,7 +43,7 @@ export default async function Header() {
               href="#/"
               className="flex items-center gap-2 text-lg font-semibold"
             >
-              <Icon name="menu" className="h-6 w-6" />
+              <LuMenuSquare />
               <span className="sr-only">TTUMC</span>
             </Link>
             <Link
@@ -65,7 +66,7 @@ export default async function Header() {
       </Sheet>
       <div className="flex w-full items-center justify-end gap-2 md:ml-auto md:gap-4">
         <Button variant="ghost" size="icon" className="rounded-full">
-          <Icon name="settings" className="h-5 w-5" />
+          <IoIosSettings size={24} />
           <span className="sr-only">Settings</span>
         </Button>
         {session?.user ? (
