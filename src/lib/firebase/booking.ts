@@ -1,6 +1,7 @@
 import { Booking } from '@/types/booking';
 import { db } from '@/lib/firebase/firebase-app';
 import {
+  addDoc,
   collection,
   deleteDoc,
   doc,
@@ -13,6 +14,11 @@ import { getCurrentWeekRange } from '../utils';
 import { User } from '@/types/user';
 
 const COLLECTION = 'bookings';
+
+interface AddBookingParams {
+  user: User;
+  date: Date;
+}
 
 export const getBookings = async (): Promise<Booking[]> => {
   try {
@@ -72,4 +78,26 @@ export const deleteBooking = async (id: string, user: User): Promise<void> => {
     console.error(e);
     throw new Error('Delete booking failed');
   }
+};
+
+export const addBooking = async (params: AddBookingParams) => {
+  const { user, date } = params;
+
+  const q = query(
+    collection(db, COLLECTION),
+    where('date', '>=', date),
+    where('date', '<=', date),
+  );
+
+  const querySnapshot = await getDocs(q);
+
+  if (querySnapshot.docs.length > 0) {
+    throw new Error('Booking already exists');
+  }
+
+  await addDoc(collection(db, COLLECTION), {
+    ownerEmail: user.email,
+    date: date,
+    createdAt: new Date(),
+  });
 };
