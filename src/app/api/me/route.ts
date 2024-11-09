@@ -1,5 +1,5 @@
 import { auth } from '@/auth';
-import { getUser } from '@/lib/firebase/user';
+import { getUser, updateUser } from '@/lib/firebase/user';
 
 export const GET = auth(async (req) => {
   if (req.auth && req.auth.user) {
@@ -15,6 +15,25 @@ export const GET = auth(async (req) => {
   return Response.json({ message: 'Not authenticated' }, { status: 401 });
 });
 
-export async function PUT(request: Request) {
-  return Response.json({}, { status: 201 });
-}
+export const PUT = auth(async (req) => {
+  if (req.auth && req.auth.user) {
+    const { user } = req.auth;
+
+    const { email } = user;
+
+    const data = await req.json();
+
+    const firebaseUser = await getUser(email as string);
+
+    const newUserData = {
+      ...firebaseUser,
+      ...data,
+    };
+
+    await updateUser(newUserData);
+
+    return Response.json({}, { status: 201 });
+  }
+
+  return Response.json({ message: 'Not authenticated' }, { status: 401 });
+});
