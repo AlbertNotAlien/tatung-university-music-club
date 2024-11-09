@@ -2,6 +2,7 @@ import { Booking } from '@/types/booking';
 import { db } from '@/lib/firebase/firebase-app';
 import {
   collection,
+  deleteDoc,
   doc,
   getDoc,
   getDocs,
@@ -9,6 +10,7 @@ import {
   where,
 } from 'firebase/firestore';
 import { getCurrentWeekRange } from '../utils';
+import { User } from '@/types/user';
 
 const COLLECTION = 'bookings';
 
@@ -53,3 +55,21 @@ export const getBookingById = async (id: string): Promise<Booking> => {
   }
 };
 
+export const deleteBooking = async (id: string, user: User): Promise<void> => {
+  try {
+    const booking = await getBookingById(id);
+
+    if (!booking) {
+      throw new Error('Booking not found');
+    }
+
+    if (booking.ownerEmail !== user.email) {
+      throw new Error('Unauthorized');
+    }
+
+    await deleteDoc(doc(db, COLLECTION, id));
+  } catch (e) {
+    console.error(e);
+    throw new Error('Delete booking failed');
+  }
+};
