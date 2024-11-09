@@ -1,6 +1,13 @@
 import { Booking } from '@/types/booking';
 import { db } from '@/lib/firebase/firebase-app';
-import { collection, getDocs, query, where } from 'firebase/firestore';
+import {
+  collection,
+  doc,
+  getDoc,
+  getDocs,
+  query,
+  where,
+} from 'firebase/firestore';
 import { getCurrentWeekRange } from '../utils';
 
 const COLLECTION = 'bookings';
@@ -32,3 +39,17 @@ export const getBookings = async (): Promise<Booking[]> => {
     throw new Error('Get bookings failed');
   }
 };
+
+export const getBookingById = async (id: string): Promise<Booking> => {
+  try {
+    const docRef = doc(db, COLLECTION, id);
+    const docSnap = await getDoc(docRef);
+    const data = docSnap.data();
+
+    return data as Booking;
+  } catch (e) {
+    console.error(e);
+    throw new Error('Get booking failed');
+  }
+};
+
