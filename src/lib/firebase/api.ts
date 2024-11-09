@@ -165,9 +165,8 @@ export async function getUserByEmail({ email }: { email: string }) {
 }
 
 export async function addUser(
-  uid: string | undefined = '',
+  email: string,
   {
-    email = '',
     firstName = '',
     lastName = '',
     displayName = '',
@@ -176,9 +175,8 @@ export async function addUser(
   }: Omit<User, 'id'>,
 ) {
   try {
-    const docRef = doc(db, 'users', uid);
+    const docRef = doc(db, 'users', email);
     await setDoc(docRef, {
-      id: uid,
       email,
       firstName,
       lastName,
