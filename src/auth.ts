@@ -26,7 +26,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
           if (isUserExist) {
             return true;
           } else {
-            await addUser(user.id, {
+            await addUser(user.email, {
               email: user.email,
               displayName: user.name,
               image: user.image,
