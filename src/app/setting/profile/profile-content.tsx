@@ -22,6 +22,10 @@ import {
   FormItem,
   FormLabel,
 } from '@/components/ui/form';
+import { useQuery } from '@tanstack/react-query';
+import { getUser } from '@/lib/firebase/user';
+import { User } from '@/types/user';
+import { UndoIcon } from 'lucide-react';
 
 const identityList = [
   '-- Please select --',
@@ -124,26 +128,28 @@ function EditProfileForm() {
   );
 }
 
-function ProfileTable() {
+function ProfileTable({ user }: { user: User }) {
+  const { firstName, lastName, displayName } = user;
+
   return (
     <div className="flex flex-col gap-4">
       <div className="mt-0 grid h-10 grid-cols-2 items-center">
         <p className="space-y-0 text-base font-semibold text-zinc-600 dark:text-zinc-400">
           First name
         </p>
-        <p className="text-black dark:text-zinc-50">Siew Fui</p>
+        <p className="text-black dark:text-zinc-50">{firstName}</p>
       </div>
       <div className="mt-0 grid h-10 grid-cols-2 items-center">
         <p className="space-y-0 text-base font-semibold text-zinc-600 dark:text-zinc-400">
           Last name
         </p>
-        <p className="text-black dark:text-zinc-50">Haw</p>
+        <p className="text-black dark:text-zinc-50">{lastName}</p>
       </div>
       <div className="mt-0 grid h-10 grid-cols-2 items-center">
         <p className="space-y-0 text-base font-semibold text-zinc-600 dark:text-zinc-400">
           Display name
         </p>
-        <p className="text-black dark:text-zinc-50">stanleyhaw94</p>
+        <p className="text-black dark:text-zinc-50">{displayName}</p>
       </div>
       <div className="mt-0 grid h-10 grid-cols-2 items-center">
         <p className="space-y-0 text-base font-semibold text-zinc-600 dark:text-zinc-400">
@@ -155,12 +161,24 @@ function ProfileTable() {
   );
 }
 
-export default function ProfileContent() {
+export default function ProfileContent({ email }: { email: string }) {
   const [isEditStatus, setIsEditStatus] = useState(true);
+  const {
+    data: user,
+    isLoading,
+    isError,
+  } = useQuery({
+    queryFn: async () => await getUser(email),
+    queryKey: ['user', email],
+  });
 
   const ChangeEditStatus = () => {
     setIsEditStatus(!isEditStatus);
   };
+
+  if (isLoading) return <p>Loading...</p>;
+  if (isError) return <p>Error loading user data.</p>;
+  if (!user) return <p>User not found, please login.</p>;
 
   return (
     <div className="flex w-full flex-col gap-4">
@@ -176,7 +194,7 @@ export default function ProfileContent() {
           </div>
         )}
       </div>
-      {isEditStatus ? <ProfileTable /> : <EditProfileForm />}
+      {isEditStatus ? <ProfileTable user={user} /> : <EditProfileForm />}
     </div>
   );
 }
