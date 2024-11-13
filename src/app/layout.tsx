@@ -6,6 +6,7 @@ import { Toaster } from '@/components/ui/toaster';
 import Header from '@/components/header';
 import Footer from '@/components/footer';
 import { ThemeProvider } from '@/components/theme-provider';
+import { ReactQueryProvider } from '@/components/react-query-provider';
 import './globals.css';
 
 const fontSans = FontSans({
@@ -37,12 +38,14 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <Header />
-          <div className="flex min-h-[calc(100dvh-4rem)] flex-col">
-            <main className="container flex flex-1 flex-col">{children}</main>
-            <Footer />
-          </div>
-          <Toaster />
+          <ReactQueryProvider>
+            <Header />
+            <div className="flex min-h-[calc(100dvh-4rem)] flex-col">
+              <main className="container flex flex-1 flex-col">{children}</main>
+              <Footer />
+            </div>
+            <Toaster />
+          </ReactQueryProvider>
         </ThemeProvider>
       </body>
     </html>
