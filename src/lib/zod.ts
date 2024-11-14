@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { Identity } from '@/data/identity-list';
 
 export const signUpSchema = z.object({
   firstName: z
@@ -39,5 +40,10 @@ export const profileSchema = z.object({
   displayName: z
     .string()
     .max(32, { message: 'Display name must be 32 characters or less.' }),
-  identity: z.string(),
+  identity: z.enum(
+    [Identity.Student, Identity.OtherSchoolStudent, Identity.GraduatedStudent],
+    {
+      errorMap: () => ({ message: 'Invalid identity.' }),
+    },
+  ),
 });
