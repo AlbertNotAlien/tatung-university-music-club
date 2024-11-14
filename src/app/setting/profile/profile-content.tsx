@@ -1,10 +1,14 @@
 'use client';
 
-import React, { useState } from 'react';
+import React from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useGetProfile, useUpdateProfile } from '@/hooks/use-profile-data';
+import { useDisclosure } from '@/hooks/use-disclosure';
 import { profileSchema } from '@/lib/zod';
+import { User } from '@/types/user';
+import { Identity } from '@/data/identity-list';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import {
@@ -22,21 +26,16 @@ import {
   FormItem,
   FormLabel,
 } from '@/components/ui/form';
-import { User } from '@/types/user';
-import { Identity } from '@/data/identity-list';
-import { useProfileData } from '@/hooks/use-profile-data';
-import { useDisclosure } from '@/hooks/use-disclosure';
-import { QueryObserverResult, RefetchOptions } from '@tanstack/react-query';
 
 type EditProfileFormProps = {
   user: User;
   onClose: () => void;
-  refetch: (options?: RefetchOptions) => Promise<QueryObserverResult>;
+  refetch: () => void;
 };
 
 function EditProfileForm({ user, onClose, refetch }: EditProfileFormProps) {
-  const [isLoading, setIsLoading] = useState(false);
   const { firstName, lastName, displayName } = user;
+  const { mutateAsync, isPending: isLoading } = useUpdateProfile();
 
   const form = useForm<z.infer<typeof profileSchema>>({
     resolver: zodResolver(profileSchema),
@@ -50,20 +49,15 @@ function EditProfileForm({ user, onClose, refetch }: EditProfileFormProps) {
 
   const { control, handleSubmit } = form;
   const onSubmit = async (data: z.infer<typeof profileSchema>) => {
-    setIsLoading(true);
-    const newData: User = {
-      ...user,
-      ...data,
-    };
+    const newData: User = { ...user, ...data };
 
-    await fetch('/api/me', {
-      method: 'PUT',
-      body: JSON.stringify(newData),
-    });
-
-    refetch();
-    onClose();
-    setIsLoading(false);
+    try {
+      await mutateAsync(newData);
+      refetch();
+      onClose();
+    } catch (error) {
+      console.error('[Update profile] Failed to update profile:', error);
+    }
   };
 
   return (
@@ -73,7 +67,9 @@ function EditProfileForm({ user, onClose, refetch }: EditProfileFormProps) {
           <Button type="button" variant="ghost" onClick={onClose}>
             cancel
           </Button>
-          <Button type="submit">{isLoading ? 'Loading...' : 'Save'}</Button>
+          <Button type="submit" disabled={isLoading}>
+            {isLoading ? 'Loading...' : 'Save'}
+          </Button>
         </div>
         <div className="flex flex-col gap-4">
           <FormField
@@ -186,7 +182,7 @@ function ProfileTable({ user }: { user: User }) {
 
 export default function ProfileContent({ email }: { email: string }) {
   const { opened, open, close } = useDisclosure();
-  const { data: user, isLoading, isError, refetch } = useProfileData(email);
+  const { data: user, isLoading, isError, refetch } = useGetProfile(email);
 
   if (isLoading) return <p>Loading...</p>;
   if (isError) return <p>Error loading user data.</p>;
