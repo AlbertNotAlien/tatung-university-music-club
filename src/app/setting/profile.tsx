@@ -27,6 +27,8 @@ import {
   FormLabel,
 } from '@/components/ui/form';
 
+// TODO: I need profile list's Identity please provide api for me DEAR DANNY SAMA.
+
 type EditProfileFormProps = {
   user: User;
   onClose: () => void;
@@ -65,10 +67,10 @@ function EditProfileForm({ user, onClose, refetch }: EditProfileFormProps) {
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="mb-4 mt-0 flex flex-row justify-end gap-4">
           <Button type="button" variant="ghost" onClick={onClose}>
-            cancel
+            {!isLoading ? 'cancel' : null}
           </Button>
           <Button type="submit" disabled={isLoading}>
-            {isLoading ? 'Loading...' : 'Save'}
+            {!isLoading ? 'Save' : 'Loading...'}
           </Button>
         </div>
         <div className="flex flex-col gap-4">
@@ -147,7 +149,7 @@ function EditProfileForm({ user, onClose, refetch }: EditProfileFormProps) {
   );
 }
 
-function ProfileTable({ user }: { user: User }) {
+function ProfileList({ user }: { user: User }) {
   const { firstName, lastName, displayName } = user;
 
   return (
@@ -180,7 +182,7 @@ function ProfileTable({ user }: { user: User }) {
   );
 }
 
-export default function ProfileContent({ email }: { email: string }) {
+export default function Profile({ email }: { email: string }) {
   const { opened, open, close } = useDisclosure();
   const { data: user, isLoading, isError, refetch } = useGetProfile(email);
 
@@ -194,7 +196,7 @@ export default function ProfileContent({ email }: { email: string }) {
         {!opened ? <Button onClick={open}>Edit Profile</Button> : null}
       </div>
       {!opened ? (
-        <ProfileTable user={user} />
+        <ProfileList user={user} />
       ) : (
         <EditProfileForm user={user} onClose={close} refetch={refetch} />
       )}
