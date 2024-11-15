@@ -1,6 +1,6 @@
 import React from 'react';
 import { auth } from '@/auth';
-import ProfileContent from '@/app/setting/profile/profile-content';
+import Profile from '@/app/setting/profile';
 
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
@@ -16,7 +16,7 @@ export default async function Page() {
         <CardTitle className="text-2xl">Profile</CardTitle>
       </CardHeader>
       <CardContent>
-        <ProfileContent email={userEmail} />
+        <Profile email={userEmail} />
       </CardContent>
     </Card>
   );
