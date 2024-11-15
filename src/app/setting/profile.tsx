@@ -129,7 +129,7 @@ function EditProfileForm({ user, onClose, refetch }: EditProfileFormProps) {
                     <SelectTrigger className="">
                       <SelectValue placeholder="-- Please select --" />
                     </SelectTrigger>
-                    <SelectContent>
+                    <SelectContent position="popper">
                       <SelectGroup>
                         {Object.values(Identity).map((identity) => (
                           <SelectItem key={identity} value={identity}>
