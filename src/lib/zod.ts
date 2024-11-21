@@ -39,6 +39,9 @@ export const profileSchema = z.object({
     .max(32, { message: 'Last name must be 32 characters or less.' }),
   displayName: z
     .string()
+    .min(1, {
+      message: 'Last Name must be at least 1 characters.',
+    })
     .max(32, { message: 'Display name must be 32 characters or less.' }),
   identity: z.enum(
     [Identity.Student, Identity.OtherSchoolStudent, Identity.GraduatedStudent],
