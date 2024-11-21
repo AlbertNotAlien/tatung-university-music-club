@@ -25,7 +25,10 @@ import {
   FormField,
   FormItem,
   FormLabel,
+  FormMessage,
 } from '@/components/ui/form';
+import Loading from './loading';
+import Error from './error';
 
 // TODO: I need profile list's Identity please provide api for me DEAR DANNY SAMA.
 
@@ -65,7 +68,7 @@ function EditProfileForm({ user, onClose, refetch }: EditProfileFormProps) {
   return (
     <Form {...form}>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <div className="mb-4 mt-0 flex flex-row justify-end gap-4">
+        <div className="mb-8 mt-0 flex flex-row justify-end gap-4">
           <Button type="button" variant="ghost" onClick={onClose}>
             {!isLoading ? 'cancel' : null}
           </Button>
@@ -73,7 +76,7 @@ function EditProfileForm({ user, onClose, refetch }: EditProfileFormProps) {
             {!isLoading ? 'Save' : 'Loading...'}
           </Button>
         </div>
-        <div className="flex flex-col gap-4">
+        <div className="flex flex-col gap-8">
           <FormField
             control={control}
             name="firstName"
@@ -85,6 +88,7 @@ function EditProfileForm({ user, onClose, refetch }: EditProfileFormProps) {
                 <FormControl>
                   <Input className="mb-80" {...field} />
                 </FormControl>
+                <FormMessage className="col-start-2" />
               </FormItem>
             )}
           />
@@ -99,6 +103,7 @@ function EditProfileForm({ user, onClose, refetch }: EditProfileFormProps) {
                 <FormControl>
                   <Input {...field} />
                 </FormControl>
+                <FormMessage className="col-start-2" />
               </FormItem>
             )}
           />
@@ -113,6 +118,7 @@ function EditProfileForm({ user, onClose, refetch }: EditProfileFormProps) {
                 <FormControl>
                   <Input {...field} />
                 </FormControl>
+                <FormMessage className="col-start-2" />
               </FormItem>
             )}
           />
@@ -149,11 +155,21 @@ function EditProfileForm({ user, onClose, refetch }: EditProfileFormProps) {
   );
 }
 
-function ProfileList({ user }: { user: User }) {
+type ProfileListProps = {
+  user: User;
+  onOpen: () => void;
+};
+
+function ProfileList({ user, onOpen }: ProfileListProps) {
   const { firstName, lastName, displayName } = user;
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-8">
+      <div className="m-0 flex flex-row justify-end gap-4">
+        <Button className="relative right-0 w-['300']" onClick={onOpen}>
+          Edit Profile
+        </Button>
+      </div>
       <div className="mt-0 grid h-10 grid-cols-2 items-center">
         <p className="space-y-0 text-base font-semibold text-zinc-600 dark:text-zinc-400">
           First name
@@ -183,22 +199,19 @@ function ProfileList({ user }: { user: User }) {
 }
 
 export default function Profile({ email }: { email: string }) {
-  const { opened, open, close } = useDisclosure();
+  const { opened: isEditStatus, open, close } = useDisclosure();
   const { data: user, isLoading, isError, refetch } = useGetProfile(email);
 
-  if (isLoading) return <p>Loading...</p>;
-  if (isError) return <p>Error loading user data.</p>;
+  if (isLoading) return <Loading />;
+  if (isError) return <Error />;
   if (!user) return <p>User not found, please login.</p>;
 
   return (
     <div className="flex w-full flex-col gap-4">
-      <div className="flex flex-row justify-end">
-        {!opened ? <Button onClick={open}>Edit Profile</Button> : null}
-      </div>
-      {!opened ? (
-        <ProfileList user={user} />
-      ) : (
+      {isEditStatus ? (
         <EditProfileForm user={user} onClose={close} refetch={refetch} />
+      ) : (
+        <ProfileList user={user} onOpen={open} />
       )}
     </div>
   );

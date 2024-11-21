@@ -8,15 +8,17 @@ export default async function Page() {
   const session = await auth();
   const userEmail = session?.user?.email;
 
-  if (!userEmail) return null;
-
   return (
     <Card className="mx-auto w-[960px] px-24 py-12">
       <CardHeader className="flex flex-row justify-between">
         <CardTitle className="text-2xl">Profile</CardTitle>
       </CardHeader>
       <CardContent>
-        <Profile email={userEmail} />
+        {userEmail ? (
+          <Profile email={userEmail} />
+        ) : (
+          <p>Email not found, please login.</p>
+        )}
       </CardContent>
     </Card>
   );
