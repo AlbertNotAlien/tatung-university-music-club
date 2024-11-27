@@ -30,8 +30,6 @@ import {
 import Loading from './loading';
 import Error from './error';
 
-// TODO: I need profile list's Identity please provide api for me DEAR DANNY SAMA.
-
 type EditProfileFormProps = {
   user: User;
   onClose: () => void;
@@ -198,20 +196,20 @@ function ProfileList({ user, onOpen }: ProfileListProps) {
   );
 }
 
-export default function Profile({ email }: { email: string }) {
+export default function Profile() {
   const { opened: isEditStatus, open, close } = useDisclosure();
-  const { data: user, isLoading, isError, refetch } = useGetProfile(email);
+  const { data, isLoading, isError, refetch } = useGetProfile();
 
   if (isLoading) return <Loading />;
   if (isError) return <Error />;
-  if (!user) return <p>User not found, please login.</p>;
+  if (!data) return <p>User not found, please login.</p>;
 
   return (
     <div className="flex w-full flex-col gap-4">
       {isEditStatus ? (
-        <EditProfileForm user={user} onClose={close} refetch={refetch} />
+        <EditProfileForm user={data} onClose={close} refetch={refetch} />
       ) : (
-        <ProfileList user={user} onOpen={open} />
+        <ProfileList user={data} onOpen={open} />
       )}
     </div>
   );

@@ -9,7 +9,7 @@ export const GET = auth(async (req) => {
 
     const firebaseUser = await getUser(email as string);
 
-    return Response.json({ user: firebaseUser });
+    return Response.json(firebaseUser);
   }
 
   return Response.json({ message: 'Not authenticated' }, { status: 401 });
