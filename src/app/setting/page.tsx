@@ -14,11 +14,7 @@ export default async function Page() {
         <CardTitle className="text-2xl">Profile</CardTitle>
       </CardHeader>
       <CardContent>
-        {userEmail ? (
-          <Profile email={userEmail} />
-        ) : (
-          <p>Email not found, please login.</p>
-        )}
+        {userEmail ? <Profile /> : <p>Email not found, please login.</p>}
       </CardContent>
     </Card>
   );
