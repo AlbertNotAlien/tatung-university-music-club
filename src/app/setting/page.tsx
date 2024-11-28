@@ -11,14 +11,14 @@ export default async function Page() {
   const userEmail = session?.user?.email;
 
   return (
-    <Tabs defaultValue="profile" className="mt-4 w-full">
+    <Tabs defaultValue="profile" className="w-full mt-4">
       <TabsList>
         <TabsTrigger value="profile">profile</TabsTrigger>
         <TabsTrigger value="bands">bands</TabsTrigger>
       </TabsList>
       <TabsContent value="profile">
-        <Card className="mx-auto w-full px-24 py-12">
-          <CardHeader className="flex flex-row justify-between">
+        <Card className="w-full mx-auto border-0 shadow-none">
+          <CardHeader className="flex flex-row justify-between px-0">
             <CardTitle className="text-2xl">Profile</CardTitle>
           </CardHeader>
           <CardContent>
@@ -27,11 +27,11 @@ export default async function Page() {
         </Card>
       </TabsContent>
       <TabsContent value="bands">
-        <Card className="mx-auto w-full px-24 py-12">
-          <CardHeader className="flex flex-row justify-between">
-            <CardTitle className="text-2xl">Bands</CardTitle>
+        <Card className="w-full mx-auto border-0 shadow-none">
+          <CardHeader className="flex flex-row justify-between px-0">
+            <CardTitle className="text-2xl">My bands</CardTitle>
           </CardHeader>
-          <CardContent>
+          <CardContent className="px-0">
             <Bands />
           </CardContent>
         </Card>

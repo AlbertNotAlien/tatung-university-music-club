@@ -50,3 +50,20 @@ export const profileSchema = z.object({
     },
   ),
 });
+
+export const bandMemberSchema = z.object({
+  displayName: z.string(),
+  email: z.string().email(),
+  image: z.string(),
+  isLeader: z.boolean(),
+});
+
+export const bandFormSchema = z.object({
+  bandName: z
+    .string()
+    .min(1, {
+      message: 'First Name must be at least 1 characters.',
+    })
+    .max(32, { message: 'First name must be 32 characters or less.' }),
+  members: z.array(bandMemberSchema),
+});
