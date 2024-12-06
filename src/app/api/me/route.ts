@@ -1,6 +1,21 @@
 import { auth } from '@/auth';
 import { getUser, updateUser } from '@/lib/firebase/user';
 
+/**
+ * @swagger
+ * tags:
+ *   - name: User
+ *     description: Operations about user
+ *
+ * /api/me:
+ *   get:
+ *     tags:
+ *       - User
+ *     description: Get current user data
+ *     responses:
+ *       200:
+ *         description: Successfully retrieved user data
+ */
 export const GET = auth(async (req) => {
   if (req.auth && req.auth.user) {
     const { user } = req.auth;
@@ -15,6 +30,27 @@ export const GET = auth(async (req) => {
   return Response.json({ message: 'Not authenticated' }, { status: 401 });
 });
 
+/**
+ * @swagger
+ * /api/me:
+ *   put:
+ *     tags:
+ *       - User
+ *     description: Update current user data
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               name:
+ *                 type: string
+ *               avatar:
+ *                 type: string
+ *     responses:
+ *       201:
+ */
 export const PUT = auth(async (req) => {
   if (req.auth && req.auth.user) {
     const { user } = req.auth;
