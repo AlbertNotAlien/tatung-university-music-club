@@ -2,6 +2,21 @@ import { auth } from '@/auth';
 import { deleteBooking } from '@/lib/firebase/booking';
 import { getUser } from '@/lib/firebase/user';
 
+/**
+ * @swagger
+ * /api/bookings/{id}:
+ *   delete:
+ *     tags:
+ *       - Bookings
+ *     description: Delete a booking
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ */
+
 export const DELETE = auth(async (req, { params }) => {
   if (req.auth && req.auth.user) {
     try {
