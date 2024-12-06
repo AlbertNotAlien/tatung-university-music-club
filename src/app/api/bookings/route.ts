@@ -3,12 +3,53 @@ import { addBooking, getBookings } from '@/lib/firebase/booking';
 import { getUser } from '@/lib/firebase/user';
 import dayjs from 'dayjs';
 
+/**
+ * @swagger
+ * tags:
+ *   - name: Bookings
+ *     description: Operations about bookings
+ *
+ * /api/bookings:
+ *   get:
+ *     tags:
+ *       - Bookings
+ *     description: Get all bookings
+ *     responses:
+ *       200:
+ *         content:
+ *           application/json:
+ */
 export const GET = async () => {
   const bookings = await getBookings();
 
   return Response.json(bookings);
 };
 
+/**
+ * @swagger
+ * /api/bookings:
+ *   post:
+ *     tags:
+ *       - Bookings
+ *     description: Create a booking
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               date:
+ *                 type: string
+ *                 format: date-time
+ *     responses:
+ *       201:
+ *         description: Booking created
+ *       400:
+ *         description: Invalid date
+ *       401:
+ *         description: Not authenticated
+ */
 export const POST = auth(async (req) => {
   if (req.auth && req.auth.user) {
     try {
