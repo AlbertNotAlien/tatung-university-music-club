@@ -1,7 +1,7 @@
 import { User } from './user';
 
 export type Band = {
-  id: string;
+  id?: string;
   name: string;
   leader: User;
   owner: User;
