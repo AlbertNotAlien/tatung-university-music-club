@@ -7,6 +7,7 @@ import {
   getDocs,
   query,
   setDoc,
+  updateDoc,
   where,
 } from 'firebase/firestore';
 import { db } from './firebase-app';
@@ -67,6 +68,17 @@ export const createBand = async (band: Band): Promise<void> => {
   } catch (e) {
     console.error(e);
     throw new Error('Create band failed');
+  }
+};
+
+export const deleteBand = async (id: string): Promise<void> => {
+  try {
+    await updateDoc(doc(db, COLLECTION, id), {
+      is_active: false,
+    });
+  } catch (e) {
+    console.error(e);
+    throw new Error('Delete band failed');
   }
 };
 
