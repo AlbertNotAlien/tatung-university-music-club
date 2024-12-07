@@ -3,6 +3,7 @@ import {
   collection,
   doc,
   DocumentReference,
+  getDoc,
   getDocs,
   query,
   setDoc,
@@ -98,6 +99,44 @@ export const getBandByName = async (name: string): Promise<Band | null> => {
       owner,
       members,
       createdAt: doc.data().created_at.toDate(),
+    } as Band;
+  } catch (e) {
+    return null;
+  }
+};
+
+export const getBandById = async (id: string): Promise<Band | null> => {
+  try {
+    console.log({ id });
+    const docRef = doc(db, COLLECTION, id);
+    const docSnap = await getDoc(docRef);
+    const data = docSnap.data();
+
+    if (!data) {
+      return null;
+    }
+
+    const leaderEmail = data.leader_ref.id;
+    const ownerEmail = data.owner_ref.id;
+    const leader = await getUser(leaderEmail);
+    const owner = await getUser(ownerEmail);
+    const memberEmails = data.member_refs.map(
+      (member: DocumentReference) => member.id,
+    );
+
+    const members = await Promise.all(
+      memberEmails.map(async (email: string) => {
+        return await getUser(email);
+      }),
+    );
+
+    return {
+      id: data.id,
+      name: data.name,
+      leader,
+      owner,
+      members,
+      createdAt: data.created_at.toDate(),
     } as Band;
   } catch (e) {
     return null;
