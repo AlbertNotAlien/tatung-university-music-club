@@ -6,6 +6,7 @@ import {
   getDocs,
   query,
   setDoc,
+  where,
 } from 'firebase/firestore';
 import { db } from './firebase-app';
 import { getUser } from './user';
@@ -68,3 +69,37 @@ export const createBand = async (band: Band): Promise<void> => {
   }
 };
 
+export const getBandByName = async (name: string): Promise<Band | null> => {
+  try {
+    const q = query(collection(db, COLLECTION), where('name', '==', name));
+
+    const querySnapshot = await getDocs(q);
+
+    const doc = querySnapshot.docs[0];
+
+    const leaderEmail = doc.data().leader_ref.id;
+    const ownerEmail = doc.data().owner_ref.id;
+    const leader = await getUser(leaderEmail);
+    const owner = await getUser(ownerEmail);
+    const memberEmails = doc
+      .data()
+      .member_refs.map((member: DocumentReference) => member.id);
+
+    const members = await Promise.all(
+      memberEmails.map(async (email: string) => {
+        return await getUser(email);
+      }),
+    );
+
+    return {
+      id: doc.id,
+      name: doc.data().name,
+      leader,
+      owner,
+      members,
+      createdAt: doc.data().created_at.toDate(),
+    } as Band;
+  } catch (e) {
+    return null;
+  }
+};
