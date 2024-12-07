@@ -5,6 +5,7 @@ import {
   DocumentReference,
   getDocs,
   query,
+  setDoc,
 } from 'firebase/firestore';
 import { db } from './firebase-app';
 import { getUser } from './user';
@@ -50,3 +51,20 @@ export const getBands = async (): Promise<Band[]> => {
     throw new Error('Get bands failed');
   }
 };
+
+export const createBand = async (band: Band): Promise<void> => {
+  console.log(band);
+  try {
+    await setDoc(doc(collection(db, COLLECTION)), {
+      name: band.name,
+      leader_ref: doc(db, 'users', band.leader.email),
+      owner_ref: doc(db, 'users', band.owner.email),
+      member_refs: band.members.map((member) => doc(db, 'users', member.email)),
+      created_at: band.createdAt,
+    });
+  } catch (e) {
+    console.error(e);
+    throw new Error('Create band failed');
+  }
+};
+
