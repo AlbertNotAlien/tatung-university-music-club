@@ -15,6 +15,9 @@ import { getUser } from '@/lib/firebase/user';
  *         required: true
  *         schema:
  *           type: string
+ *     responses:
+ *       204:
+ *         description: Booking deleted
  */
 
 export const DELETE = auth(async (req, { params }) => {

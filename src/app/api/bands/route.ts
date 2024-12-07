@@ -14,8 +14,7 @@ import { getBands } from '@/lib/firebase/band';
  *     description: Get all bands
  *     responses:
  *       200:
- *         content:
- *           application/json:
+ *         description: Successfully retrieved bands
  */
 export const GET = auth(async (req) => {
   if (req.auth && req.auth.user) {
