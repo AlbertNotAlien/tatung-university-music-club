@@ -15,7 +15,7 @@ const COLLECTION = 'bands';
 
 export const getBands = async (): Promise<Band[]> => {
   try {
-    const q = query(collection(db, COLLECTION));
+    const q = query(collection(db, COLLECTION), where('is_active', '==', true));
 
     const querySnapshot = await getDocs(q);
 
