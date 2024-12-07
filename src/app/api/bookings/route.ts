@@ -16,8 +16,7 @@ import dayjs from 'dayjs';
  *     description: Get all bookings
  *     responses:
  *       200:
- *         content:
- *           application/json:
+ *        description: Successfully retrieved bookings
  */
 export const GET = async () => {
   const bookings = await getBookings();

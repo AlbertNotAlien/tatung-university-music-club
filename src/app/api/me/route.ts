@@ -50,6 +50,7 @@ export const GET = auth(async (req) => {
  *                 type: string
  *     responses:
  *       201:
+ *        description: User data updated
  */
 export const PUT = auth(async (req) => {
   if (req.auth && req.auth.user) {
