@@ -1,6 +1,12 @@
 import { db } from '@/lib/firebase/firebase-app';
 import { User } from '@/types/user';
-import { doc, getDoc, updateDoc } from 'firebase/firestore';
+import {
+  collection,
+  doc,
+  getDoc,
+  getDocs,
+  updateDoc,
+} from 'firebase/firestore';
 
 const COLLECTION = 'users';
 
@@ -28,5 +34,21 @@ export const updateUser = async (user: User): Promise<void> => {
   } catch (e) {
     console.error(e);
     throw new Error(`Failed to update user, user: ${JSON.stringify(user)}`);
+  }
+};
+
+export const listUsers = async (): Promise<User[]> => {
+  try {
+    const querySnapshot = await getDocs(collection(db, COLLECTION));
+    const users: User[] = [];
+
+    querySnapshot.forEach((doc) => {
+      users.push(doc.data() as User);
+    });
+
+    return users;
+  } catch (e) {
+    console.error(e);
+    throw new Error('Failed to list users');
   }
 };
